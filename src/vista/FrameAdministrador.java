@@ -31,6 +31,9 @@ public class FrameAdministrador extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         btn = new javax.swing.JButton();
+        btn1 = new javax.swing.JButton();
+        btn2 = new javax.swing.JButton();
+        btn3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -39,22 +42,62 @@ public class FrameAdministrador extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(237, 234, 222));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Admin.png"))); // NOI18N
         jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 140, 149));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 140, 149));
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 170, 230, -1));
 
-        btn.setText("Botton");
+        btn.setBackground(new java.awt.Color(255, 120, 103));
+        btn.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
+        btn.setForeground(new java.awt.Color(0, 0, 0));
+        btn.setText("Productos");
+        btn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
         btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActionPerformed(evt);
             }
         });
-        jPanel1.add(btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
+        jPanel1.add(btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 100, 30));
+
+        btn1.setBackground(new java.awt.Color(255, 120, 103));
+        btn1.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
+        btn1.setForeground(new java.awt.Color(0, 0, 0));
+        btn1.setText("Vendedores");
+        btn1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
+        btn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 100, 30));
+
+        btn2.setBackground(new java.awt.Color(255, 120, 103));
+        btn2.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
+        btn2.setForeground(new java.awt.Color(0, 0, 0));
+        btn2.setText("Proveedores");
+        btn2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
+        btn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, 100, 30));
+
+        btn3.setBackground(new java.awt.Color(255, 120, 103));
+        btn3.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
+        btn3.setForeground(new java.awt.Color(0, 0, 0));
+        btn3.setText("Compras");
+        btn3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
+        btn3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, 100, 30));
 
         jPanel2.setBackground(new java.awt.Color(237, 234, 222));
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -65,7 +108,7 @@ public class FrameAdministrador extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Franklin Gothic Demi Cond", 2, 24)); // NOI18N
         jLabel3.setText("Tu ferretería de confianza, siempre a tu medida");
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 3, 24)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Dialog", 3, 20)); // NOI18N
         jLabel4.setText("Herramientas para tus proyectos, soluciones para tu hogar.");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -75,14 +118,15 @@ public class FrameAdministrador extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 635, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33))))
+                        .addGap(33, 33, 33))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(125, 125, 125)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,7 +136,8 @@ public class FrameAdministrador extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -139,6 +184,18 @@ public class FrameAdministrador extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnActionPerformed
 
+    private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn1ActionPerformed
+
+    private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn2ActionPerformed
+
+    private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -177,6 +234,9 @@ public class FrameAdministrador extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn;
+    private javax.swing.JButton btn1;
+    private javax.swing.JButton btn2;
+    private javax.swing.JButton btn3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
