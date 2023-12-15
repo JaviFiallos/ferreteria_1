@@ -32,11 +32,11 @@ public class Marca {
         this.nombre = nombre;
     }
 
-    public String getUbicaion() {
+    public String getCalidad() {
         return calidad;
     }
 
-    public void setUbicaion(String ubicaion) {
+    public void setCalidad(String ubicaion) {
         this.calidad = ubicaion;
     }
 
