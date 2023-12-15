@@ -4,6 +4,9 @@
  */
 package vista;
 
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Kiwar
@@ -18,6 +21,18 @@ public class FrameAdministrador extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
     }
 
+    public void mostrarPanel(JPanel p) {
+
+        p.setSize(901, 480);
+        p.setLocation(0, 0);
+
+        panelPrincipal.removeAll();
+        panelPrincipal.add(p, BorderLayout.CENTER);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,10 +45,10 @@ public class FrameAdministrador extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        btn = new javax.swing.JButton();
-        btn1 = new javax.swing.JButton();
-        btn2 = new javax.swing.JButton();
-        btn3 = new javax.swing.JButton();
+        btnProducto = new javax.swing.JButton();
+        btnVendedor = new javax.swing.JButton();
+        btnProveedor = new javax.swing.JButton();
+        btnCompras = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -51,53 +66,53 @@ public class FrameAdministrador extends javax.swing.JFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 140, 149));
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 170, 230, -1));
 
-        btn.setBackground(new java.awt.Color(255, 120, 103));
-        btn.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
-        btn.setForeground(new java.awt.Color(0, 0, 0));
-        btn.setText("Productos");
-        btn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
-        btn.addActionListener(new java.awt.event.ActionListener() {
+        btnProducto.setBackground(new java.awt.Color(255, 120, 103));
+        btnProducto.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
+        btnProducto.setForeground(new java.awt.Color(0, 0, 0));
+        btnProducto.setText("Productos");
+        btnProducto.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
+        btnProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActionPerformed(evt);
+                btnProductoActionPerformed(evt);
             }
         });
-        jPanel1.add(btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 100, 30));
+        jPanel1.add(btnProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 100, 30));
 
-        btn1.setBackground(new java.awt.Color(255, 120, 103));
-        btn1.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
-        btn1.setForeground(new java.awt.Color(0, 0, 0));
-        btn1.setText("Vendedores");
-        btn1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
-        btn1.addActionListener(new java.awt.event.ActionListener() {
+        btnVendedor.setBackground(new java.awt.Color(255, 120, 103));
+        btnVendedor.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
+        btnVendedor.setForeground(new java.awt.Color(0, 0, 0));
+        btnVendedor.setText("Vendedores");
+        btnVendedor.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
+        btnVendedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn1ActionPerformed(evt);
+                btnVendedorActionPerformed(evt);
             }
         });
-        jPanel1.add(btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 100, 30));
+        jPanel1.add(btnVendedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 100, 30));
 
-        btn2.setBackground(new java.awt.Color(255, 120, 103));
-        btn2.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
-        btn2.setForeground(new java.awt.Color(0, 0, 0));
-        btn2.setText("Proveedores");
-        btn2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
-        btn2.addActionListener(new java.awt.event.ActionListener() {
+        btnProveedor.setBackground(new java.awt.Color(255, 120, 103));
+        btnProveedor.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
+        btnProveedor.setForeground(new java.awt.Color(0, 0, 0));
+        btnProveedor.setText("Proveedores");
+        btnProveedor.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
+        btnProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn2ActionPerformed(evt);
+                btnProveedorActionPerformed(evt);
             }
         });
-        jPanel1.add(btn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, 100, 30));
+        jPanel1.add(btnProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, 100, 30));
 
-        btn3.setBackground(new java.awt.Color(255, 120, 103));
-        btn3.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
-        btn3.setForeground(new java.awt.Color(0, 0, 0));
-        btn3.setText("Compras");
-        btn3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
-        btn3.addActionListener(new java.awt.event.ActionListener() {
+        btnCompras.setBackground(new java.awt.Color(255, 120, 103));
+        btnCompras.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
+        btnCompras.setForeground(new java.awt.Color(0, 0, 0));
+        btnCompras.setText("Compras");
+        btnCompras.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
+        btnCompras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn3ActionPerformed(evt);
+                btnComprasActionPerformed(evt);
             }
         });
-        jPanel1.add(btn3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, 100, 30));
+        jPanel1.add(btnCompras, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, 100, 30));
 
         jPanel2.setBackground(new java.awt.Color(237, 234, 222));
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -120,7 +135,7 @@ public class FrameAdministrador extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 635, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(33, 33, 33))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -148,11 +163,11 @@ public class FrameAdministrador extends javax.swing.JFrame {
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 897, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 381, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -164,13 +179,11 @@ public class FrameAdministrador extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -180,21 +193,24 @@ public class FrameAdministrador extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActionPerformed
+    private void btnProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnActionPerformed
+    }//GEN-LAST:event_btnProductoActionPerformed
 
-    private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn1ActionPerformed
+    private void btnVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendedorActionPerformed
+       
+        panelVendedores p = new panelVendedores();
+        this.mostrarPanel(p);
+    }//GEN-LAST:event_btnVendedorActionPerformed
 
-    private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn2ActionPerformed
+    private void btnProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProveedorActionPerformed
+        panelProveedores p = new panelProveedores();
+        this.mostrarPanel(p);
+    }//GEN-LAST:event_btnProveedorActionPerformed
 
-    private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
+    private void btnComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btn3ActionPerformed
+    }//GEN-LAST:event_btnComprasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,10 +249,10 @@ public class FrameAdministrador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn;
-    private javax.swing.JButton btn1;
-    private javax.swing.JButton btn2;
-    private javax.swing.JButton btn3;
+    private javax.swing.JButton btnCompras;
+    private javax.swing.JButton btnProducto;
+    private javax.swing.JButton btnProveedor;
+    private javax.swing.JButton btnVendedor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
