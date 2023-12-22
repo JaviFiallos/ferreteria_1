@@ -4,7 +4,11 @@
  */
 package vista;
 
-import java.awt.Color;
+import clases.Categorias;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.CategoriasDAO;
 
 /**
  *
@@ -12,11 +16,31 @@ import java.awt.Color;
  */
 public class panelCategorias extends javax.swing.JPanel {
 
-    /**
-     * Creates new form panelAdminUsuarios
-     */
+    private Categorias c;
+    private CategoriasDAO cd = new CategoriasDAO();
+    private DefaultTableModel modelo;
+
     public panelCategorias() {
         initComponents();
+        cargarTabla();
+        this.lbl_ID.setVisible(false);
+    }
+
+    private void limpiar() {
+        this.txtNombre.setText("");
+        this.txtUbicacion.setText("");
+        cargarTabla();
+    }
+
+    private void cargarTabla() {
+        
+        String titulos [] = {"ID","NOMBRE","UBICACION"};
+        modelo  = new DefaultTableModel(titulos, 0);
+        List<Categorias> lp = cd.listarCategoria();
+        for (Categorias p : lp) {
+            modelo.addRow(new Object[]{p.getId(),p.getNombre(),p.getUbicaion()});
+        }
+        this.tablaProductos.setModel(modelo);
     }
 
     /**
@@ -39,6 +63,7 @@ public class panelCategorias extends javax.swing.JPanel {
         btnLimpiar = new javax.swing.JButton();
         txtUbicacion = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+        lbl_ID = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 218, 157));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -51,6 +76,11 @@ public class panelCategorias extends javax.swing.JPanel {
 
             }
         ));
+        tablaProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaProductosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaProductos);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 430, 260));
@@ -85,6 +115,11 @@ public class panelCategorias extends javax.swing.JPanel {
         btnModificar.setForeground(new java.awt.Color(0, 0, 0));
         btnModificar.setText("MODIFICAR");
         btnModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
         add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 110, 30));
 
         btnAgregar.setBackground(new java.awt.Color(255, 102, 0));
@@ -92,6 +127,11 @@ public class panelCategorias extends javax.swing.JPanel {
         btnAgregar.setForeground(new java.awt.Color(0, 0, 0));
         btnAgregar.setText("AGREGAR");
         btnAgregar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
         add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 110, 30));
 
         btnLimpiar.setBackground(new java.awt.Color(255, 153, 0));
@@ -113,15 +153,70 @@ public class panelCategorias extends javax.swing.JPanel {
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("UBICACION:");
         add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
+
+        lbl_ID.setForeground(new java.awt.Color(255, 218, 157));
+        add(lbl_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 40, 30));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        if (!this.lbl_ID.equals("")) {
+
+            if (cd.eliminarCategoria(Integer.valueOf(this.lbl_ID.getText()))) {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
+            } else {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "No se Elimino");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una Categoria");
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        // TODO add your handling code here:
+        limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+
+        String nombre = this.txtNombre.getText();
+        String ubicacion = this.txtUbicacion.getText();
+        c = new Categorias(nombre, ubicacion);
+        if (cd.registrarCategoria(c)) {
+            limpiar();
+            JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+        } else {
+            limpiar();
+            JOptionPane.showMessageDialog(this, "No se registro");
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        if (!this.lbl_ID.equals("")) {
+
+            String nombre = this.txtNombre.getText();
+            String ubicacion = this.txtUbicacion.getText();
+            int id = Integer.valueOf(this.lbl_ID.getText());
+            c = new Categorias(id,nombre, ubicacion);
+            if (cd.modificarCategoria(c)) {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "Se Modifico correctamente");
+            } else {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "No se Modifico");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una Categoria");
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void tablaProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductosMouseClicked
+        
+        int fila = this.tablaProductos.rowAtPoint(evt.getPoint());
+        this.lbl_ID.setText(this.tablaProductos.getValueAt(fila, 0).toString());
+        this.txtNombre.setText(this.tablaProductos.getValueAt(fila, 1).toString());
+        this.txtUbicacion.setText(this.tablaProductos.getValueAt(fila, 2).toString());
+    }//GEN-LAST:event_tablaProductosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -133,6 +228,7 @@ public class panelCategorias extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbl_ID;
     private javax.swing.JTable tablaProductos;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtUbicacion;

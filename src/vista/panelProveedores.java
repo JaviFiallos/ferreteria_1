@@ -187,7 +187,7 @@ public class panelProveedores extends javax.swing.JPanel {
             }
         }
         else{
-             JOptionPane.showMessageDialog(this, "Ingrese un Ruc");
+             JOptionPane.showMessageDialog(this, "Seleccione un Proveedor");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 

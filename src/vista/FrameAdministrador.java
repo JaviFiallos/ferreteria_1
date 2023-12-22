@@ -249,8 +249,8 @@ public class FrameAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     private void btnMarcasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarcasActionPerformed
-       panelMarcas_ p = new panelMarcas_();
-        this.mostrarPanel(p);
+//       panelMarcas_ p = new panelMarcas_();
+//        this.mostrarPanel(p);
     }//GEN-LAST:event_btnMarcasActionPerformed
 
     /**

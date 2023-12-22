@@ -6,11 +6,18 @@ public class Categorias {
     private String nombre;
     private String ubicaion;
 
+    public Categorias(String nombre, String ubicaion) {
+        this.nombre = nombre;
+        this.ubicaion = ubicaion;
+    }
+
     public Categorias(int id, String nombre, String ubicaion) {
         this.id = id;
         this.nombre = nombre;
         this.ubicaion = ubicaion;
     }
+    
+    
 
     public Categorias() {
     }

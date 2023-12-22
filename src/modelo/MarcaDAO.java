@@ -33,6 +33,26 @@ public class MarcaDAO extends Conexion{
         }
         return false;
     }
+    
+        public boolean modificarMarca(Marca c) {
+
+        String sql = "UPDATE marcas SET NOM_MAR=?, CAL_MAR=? WHERE ID_MAR=?";
+        
+         try {
+
+            ps = con.prepareStatement(sql);
+            ps.setString(1, c.getNombre());
+            ps.setString(2, c.getCalidad());
+            ps.setInt(3, c.getId());
+            if (ps.executeUpdate() > 0) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 
     public boolean eliminarMarca(int id) {
         
@@ -41,7 +61,7 @@ public class MarcaDAO extends Conexion{
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
-            if (ps.execute()) {
+            if (ps.executeUpdate() > 0) {
                 return true;
             }
         } catch (Exception e) {
