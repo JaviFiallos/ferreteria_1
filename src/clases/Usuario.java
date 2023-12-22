@@ -18,6 +18,17 @@ public class Usuario {
         this.contra = contra;
     }
 
+    public Usuario(String cedula, String contra, String nombre, String apellido, double sueldo, String celular) {
+        this.cedula = cedula;
+        this.contra = contra;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.sueldo = sueldo;
+        this.celular = celular;
+    }
+    
+    
+
     public String getCedula() {
         return cedula;
     }

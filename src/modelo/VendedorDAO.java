@@ -40,7 +40,7 @@ public class VendedorDAO extends Conexion {
 
     public boolean modificarVendedor(Usuario c) {
 
-        String sql = "UPDATE usuarios SET CON_USU=?, NOM_USU=?, APE_USU=?, SUE_USU=?, CEL_USU=?, WHERE CED_USU=?";
+        String sql = "UPDATE usuarios SET CON_USU=?, NOM_USU=?, APE_USU=?, SUE_USU=?, CEL_USU=? WHERE CED_USU=?";
         try {
 
             ps = con.prepareStatement(sql);
@@ -67,7 +67,7 @@ public class VendedorDAO extends Conexion {
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, cedula);
-            if (ps.execute()) {
+            if (ps.executeUpdate()>0) {
                 return true;
             }
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class VendedorDAO extends Conexion {
 
     public List listarVendedor() {
 
-        String sql = "SELECT NOM_USU, APE_USU, SUE_USU, CEL_USU FROM usuarios";
+        String sql = "SELECT CED_USU, CON_USU, NOM_USU, APE_USU, SUE_USU, CEL_USU FROM usuarios";
         List<Usuario> lista = new ArrayList<>();
 
         try {
@@ -86,6 +86,8 @@ public class VendedorDAO extends Conexion {
             rs = ps.executeQuery();
             while (rs.next()) {
                 Usuario pro = new Usuario();
+                pro.setCedula(rs.getString("CED_USU"));
+                pro.setContra(rs.getString("CON_USU"));
                 pro.setNombre(rs.getString("NOM_USU"));
                 pro.setApellido(rs.getString("APE_USU"));
                 pro.setSueldo(rs.getDouble("SUE_USU"));

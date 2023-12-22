@@ -4,17 +4,47 @@
  */
 package vista;
 
+import clases.Usuario;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.VendedorDAO;
+
 /**
  *
  * @author PC
  */
 public class panelVendedores extends javax.swing.JPanel {
 
-    /**
-     * Creates new form panelAdminUsuarios
-     */
+    private Usuario v;
+    private final VendedorDAO vd = new VendedorDAO();
+    private DefaultTableModel modelo;
+
     public panelVendedores() {
         initComponents();
+        cargarTabla();
+    }
+
+    private void limpiar() {
+        this.txtCedula.setText("");
+        this.txtNombre.setText("");
+        this.txtApellido.setText("");
+        this.txtSueldo.setText("");
+        this.txtCelular.setText("");
+        this.txtContra.setText("");
+        this.txtContra2.setText("");
+
+        cargarTabla();
+    }
+
+    private void cargarTabla() {
+        String titulos[] = {"CEDULA", "NOMBRE", "APELLIDO", "SUELDO", "CELULAR", "CONTRASEÑA"};
+        modelo = new DefaultTableModel(titulos, 0);
+        List<Usuario> lp = vd.listarVendedor();
+        for (Usuario p : lp) {
+            modelo.addRow(new Object[]{p.getCedula(), p.getNombre(), p.getApellido(), p.getSueldo(), p.getCelular(), p.getContra()});
+        }
+        this.tablaVendedores.setModel(modelo);
     }
 
     /**
@@ -27,7 +57,7 @@ public class panelVendedores extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaVendedores = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtCedula = new javax.swing.JTextField();
@@ -40,10 +70,10 @@ public class panelVendedores extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnAgergar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
         txtSueldo = new javax.swing.JFormattedTextField();
         txtContra = new javax.swing.JPasswordField();
         txtContra2 = new javax.swing.JPasswordField();
@@ -51,7 +81,7 @@ public class panelVendedores extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 218, 157));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVendedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -59,7 +89,12 @@ public class panelVendedores extends javax.swing.JPanel {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tablaVendedores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaVendedoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaVendedores);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 70, 510, 260));
 
@@ -115,95 +150,155 @@ public class panelVendedores extends javax.swing.JPanel {
         jLabel9.setText("CONTRASEÑA :");
         add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(255, 102, 0));
-        jButton1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("ELIMINAR");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar.setBackground(new java.awt.Color(255, 102, 0));
+        btnEliminar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnEliminarActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 360, 120, 30));
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 360, 120, 30));
 
-        jButton2.setBackground(new java.awt.Color(255, 102, 0));
-        jButton2.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("MODIFICAR");
-        jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 370, 110, 30));
-
-        jButton3.setBackground(new java.awt.Color(255, 102, 0));
-        jButton3.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("AGREGAR");
-        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
-        add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 370, 110, 30));
-
-        jButton4.setBackground(new java.awt.Color(255, 153, 0));
-        jButton4.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setText("LIMPIAR");
-        jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnModificar.setBackground(new java.awt.Color(255, 102, 0));
+        btnModificar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        btnModificar.setForeground(new java.awt.Color(0, 0, 0));
+        btnModificar.setText("MODIFICAR");
+        btnModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnModificarActionPerformed(evt);
             }
         });
-        add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 430, 120, 30));
+        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 360, 110, 30));
+
+        btnAgergar.setBackground(new java.awt.Color(255, 102, 0));
+        btnAgergar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        btnAgergar.setForeground(new java.awt.Color(0, 0, 0));
+        btnAgergar.setText("AGREGAR");
+        btnAgergar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnAgergar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgergarActionPerformed(evt);
+            }
+        });
+        add(btnAgergar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 360, 110, 30));
+
+        btnLimpiar.setBackground(new java.awt.Color(255, 153, 0));
+        btnLimpiar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(0, 0, 0));
+        btnLimpiar.setText("LIMPIAR");
+        btnLimpiar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 420, 120, 30));
 
         txtSueldo.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        txtSueldo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSueldoActionPerformed(evt);
-            }
-        });
         add(txtSueldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, 170, -1));
 
         txtContra.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        txtContra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContraActionPerformed(evt);
-            }
-        });
         add(txtContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 270, 170, 20));
 
         txtContra2.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        txtContra2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContra2ActionPerformed(evt);
-            }
-        });
         add(txtContra2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 170, 20));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+        if (!this.txtCedula.equals("")) {
 
-    private void txtSueldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSueldoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSueldoActionPerformed
+            if (vd.eliminarVendedor(this.txtCedula.getText())) {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
+            } else {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "No se Elimino el Vendedor");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingrese un Ruc");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void txtContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtContraActionPerformed
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        limpiar();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
-    private void txtContra2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContra2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtContra2ActionPerformed
+    private void btnAgergarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgergarActionPerformed
+        String cedula = this.txtCedula.getText();
+        String nombre = this.txtNombre.getText();
+        String apellido = this.txtApellido.getText();
+        String celular = this.txtCelular.getText();
+        Double sueldo = Double.valueOf(this.txtSueldo.getText());
+        String contra = new String(this.txtContra.getPassword());
+        String confContra = new String(this.txtContra2.getPassword());
+
+        if (contra.equals(confContra)) {
+            v = new Usuario(cedula, confContra, nombre, apellido, sueldo, celular);
+            if (vd.registrarVendedor(v)) {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+            } else {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "No se registro el Vendedor");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Las Contraseñas No coinciden");
+        }
+
+
+    }//GEN-LAST:event_btnAgergarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+
+        if (!this.txtCedula.equals("")) {
+
+            String cedula = this.txtCedula.getText();
+            String nombre = this.txtNombre.getText();
+            String apellido = this.txtApellido.getText();
+            String celular = this.txtCelular.getText();
+            Double sueldo = Double.valueOf(this.txtSueldo.getText());
+            String contra = new String(this.txtContra.getPassword());
+            String confContra = new String(this.txtContra2.getPassword());
+
+            if (contra.equals(confContra)) {
+                v = new Usuario(cedula, confContra, nombre, apellido, sueldo, celular);
+                if (vd.modificarVendedor(v)) {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "Se MOdifico correctamente");
+                } else {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "No se modifico el Vendedor");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Las Contraseñas No coinciden");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingrese una Cedula");
+        }
+
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void tablaVendedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVendedoresMouseClicked
+        int fila = this.tablaVendedores.rowAtPoint(evt.getPoint());
+        this.txtCedula.setText(this.tablaVendedores.getValueAt(fila, 0).toString());
+        this.txtNombre.setText(this.tablaVendedores.getValueAt(fila, 1).toString());
+        this.txtApellido.setText(this.tablaVendedores.getValueAt(fila, 2).toString());
+        this.txtSueldo.setText(this.tablaVendedores.getValueAt(fila, 3).toString());
+        this.txtCelular.setText(this.tablaVendedores.getValueAt(fila, 4).toString());
+        this.txtContra.setText(this.tablaVendedores.getValueAt(fila, 5).toString());
+    }//GEN-LAST:event_tablaVendedoresMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnAgergar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -213,7 +308,7 @@ public class panelVendedores extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaVendedores;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtCelular;
