@@ -12,6 +12,10 @@ public class Marca {
         this.calidad = calidad;
     }
 
+    public Marca( String nombre, String calidad) {
+        this.nombre = nombre;
+        this.calidad = calidad;
+    }
     public Marca() {
     }
 

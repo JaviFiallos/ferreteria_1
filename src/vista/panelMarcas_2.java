@@ -4,23 +4,23 @@
  */
 package vista;
 
-import clases.Categorias;
+import clases.Marca;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import modelo.CategoriasDAO;
+import modelo.MarcaDAO;
 
 /**
  *
  * @author PC
  */
-public class panelCategorias extends javax.swing.JPanel {
+public class panelMarcas_2 extends javax.swing.JPanel {
 
-    private Categorias c;
-    private CategoriasDAO cd = new CategoriasDAO();
+    private Marca c;
+    private MarcaDAO cd = new MarcaDAO();
     private DefaultTableModel modelo;
 
-    public panelCategorias() {
+    public panelMarcas_2() {
         initComponents();
         cargarTabla();
         this.lbl_ID.setVisible(false);
@@ -28,18 +28,18 @@ public class panelCategorias extends javax.swing.JPanel {
 
     private void limpiar() {
         this.txtNombre.setText("");
-        this.txtUbicacion.setText("");
         this.lbl_ID.setText("");
+        this.comboCalidad.setSelectedIndex(0);
         cargarTabla();
     }
 
     private void cargarTabla() {
-        
-        String titulos [] = {"ID","NOMBRE","UBICACION"};
-        modelo  = new DefaultTableModel(titulos, 0);
-        List<Categorias> lp = cd.listarCategoria();
-        for (Categorias p : lp) {
-            modelo.addRow(new Object[]{p.getId(),p.getNombre(),p.getUbicaion()});
+
+        String titulos[] = {"ID", "NOMBRE", "CALIDAD"};
+        modelo = new DefaultTableModel(titulos, 0);
+        List<Marca> lp = cd.listarMarca();
+        for (Marca p : lp) {
+            modelo.addRow(new Object[]{p.getId(), p.getNombre(), p.getCalidad()});
         }
         this.tablaProductos.setModel(modelo);
     }
@@ -62,9 +62,9 @@ public class panelCategorias extends javax.swing.JPanel {
         btnModificar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
-        txtUbicacion = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         lbl_ID = new javax.swing.JLabel();
+        comboCalidad = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 218, 157));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -88,7 +88,7 @@ public class panelCategorias extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Corbel", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("CATEGORIAS");
+        jLabel1.setText("MARCAS");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 20, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
@@ -147,22 +147,23 @@ public class panelCategorias extends javax.swing.JPanel {
         });
         add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, 120, 30));
 
-        txtUbicacion.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        add(txtUbicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 200, -1));
-
         jLabel9.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel9.setText("UBICACION:");
+        jLabel9.setText("CALIDAD:");
         add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
 
         lbl_ID.setForeground(new java.awt.Color(255, 218, 157));
         add(lbl_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 40, 30));
+
+        comboCalidad.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        comboCalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Mala", "Regular", "Buena", "Muy Buena", "Excelente" }));
+        add(comboCalidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 200, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (!this.lbl_ID.equals("")) {
 
-            if (cd.eliminarCategoria(Integer.valueOf(this.lbl_ID.getText()))) {
+            if (cd.eliminarMarca(Integer.valueOf(this.lbl_ID.getText()))) {
                 limpiar();
                 JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
             } else {
@@ -170,7 +171,7 @@ public class panelCategorias extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "No se Elimino");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una Categoria");
+            JOptionPane.showMessageDialog(this, "Seleccione una Marca");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -180,43 +181,54 @@ public class panelCategorias extends javax.swing.JPanel {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
-        String nombre = this.txtNombre.getText();
-        String ubicacion = this.txtUbicacion.getText();
-        c = new Categorias(nombre, ubicacion);
-        if (cd.registrarCategoria(c)) {
-            limpiar();
-            JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+        if (this.comboCalidad.getSelectedIndex() != 0) {
+            String nombre = this.txtNombre.getText();
+            String ubicacion = this.comboCalidad.getSelectedItem().toString();
+            c = new Marca(nombre, ubicacion);
+            if (cd.registrarMarca(c)) {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+            } else {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "No se registro");
+            }
         } else {
-            limpiar();
-            JOptionPane.showMessageDialog(this, "No se registro");
+            JOptionPane.showMessageDialog(this, "Seleccione la calidad");
         }
+
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         if (!this.lbl_ID.equals("")) {
 
-            String nombre = this.txtNombre.getText();
-            String ubicacion = this.txtUbicacion.getText();
-            int id = Integer.valueOf(this.lbl_ID.getText());
-            c = new Categorias(id,nombre, ubicacion);
-            if (cd.modificarCategoria(c)) {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "Se Modifico correctamente");
+            if (this.comboCalidad.getSelectedIndex() != 0) {
+                String nombre = this.txtNombre.getText();
+                String ubicacion = this.comboCalidad.getSelectedItem().toString();
+                int id = Integer.valueOf(this.lbl_ID.getText());
+                c = new Marca(id, nombre, ubicacion);
+                if (cd.modificarMarca(c)) {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "Se Modifico correctamente");
+                } else {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "No se Modifico");
+                }
             } else {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "No se Modifico");
+
+                JOptionPane.showMessageDialog(this, "Seleccione la calidad");
             }
+
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una Categoria");
+            JOptionPane.showMessageDialog(this, "Seleccione una Marca");
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void tablaProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductosMouseClicked
-        
+
         int fila = this.tablaProductos.rowAtPoint(evt.getPoint());
         this.lbl_ID.setText(this.tablaProductos.getValueAt(fila, 0).toString());
         this.txtNombre.setText(this.tablaProductos.getValueAt(fila, 1).toString());
-        this.txtUbicacion.setText(this.tablaProductos.getValueAt(fila, 2).toString());
+        this.comboCalidad.getModel().setSelectedItem(this.tablaProductos.getValueAt(fila, 2).toString());
     }//GEN-LAST:event_tablaProductosMouseClicked
 
 
@@ -225,6 +237,7 @@ public class panelCategorias extends javax.swing.JPanel {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JComboBox<String> comboCalidad;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
@@ -232,6 +245,5 @@ public class panelCategorias extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_ID;
     private javax.swing.JTable tablaProductos;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtUbicacion;
     // End of variables declaration//GEN-END:variables
 }
