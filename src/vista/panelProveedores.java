@@ -1,8 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package vista;
+
+import clases.Proveedor;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.ProveedorDAO;
 
 /**
  *
@@ -10,13 +12,34 @@ package vista;
  */
 public class panelProveedores extends javax.swing.JPanel {
 
-    /**
-     * Creates new form panelAdminUsuarios
-     */
+    private Proveedor p;
+    private final ProveedorDAO pd = new ProveedorDAO();
+    private DefaultTableModel modelo;
+
     public panelProveedores() {
         initComponents();
+        cargarTabla();
     }
 
+    private void limpiar() {
+        this.txtRUC.setText("");
+        this.txtNombre.setText("");
+        this.txtDir.setText("");
+        this.txtCelular.setText("");
+        cargarTabla();
+    }
+
+    private void cargarTabla(){
+    
+        String titulos [] = {"RUC","NOMBRE","DIRECCION","TELEFONO"};
+        modelo  = new DefaultTableModel(titulos, 0);
+        List<Proveedor> lp = pd.listarProveedor();
+        for (Proveedor p : lp) {
+            modelo.addRow(new Object[]{p.getRuc(),p.getNombre(),p.getDireccion(),p.getTelefono()});
+        }
+        this.tablaProveedores.setModel(modelo);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,25 +50,25 @@ public class panelProveedores extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaProveedores = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtDir = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        txtCelular = new javax.swing.JTextField();
+        btnEliminar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        txtRUC = new javax.swing.JFormattedTextField();
 
         setBackground(new java.awt.Color(255, 218, 157));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -53,9 +76,14 @@ public class panelProveedores extends javax.swing.JPanel {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tablaProveedores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaProveedoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaProveedores);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 70, 510, 260));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 470, 260));
 
         jLabel1.setFont(new java.awt.Font("Corbel", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -67,96 +95,169 @@ public class panelProveedores extends javax.swing.JPanel {
         jLabel3.setText("RUC :");
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, -1));
 
-        jTextField1.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 170, -1));
-
         jLabel4.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("NOMBRE :");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
 
-        jTextField2.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 170, -1));
+        txtNombre.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 170, -1));
 
         jLabel5.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("DIRECCION :");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
 
-        jTextField3.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, 170, -1));
+        txtDir.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        add(txtDir, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, 170, -1));
 
         jLabel6.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("CELULAR :");
         add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, -1, -1));
 
-        jTextField4.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, 170, -1));
+        txtCelular.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        add(txtCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, 170, -1));
 
-        jButton1.setBackground(new java.awt.Color(255, 102, 0));
-        jButton1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("ELIMINAR");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar.setBackground(new java.awt.Color(255, 102, 0));
+        btnEliminar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnEliminarActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 360, 120, 30));
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 360, 120, 30));
 
-        jButton2.setBackground(new java.awt.Color(255, 102, 0));
-        jButton2.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("MODIFICAR");
-        jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 110, 30));
-
-        jButton3.setBackground(new java.awt.Color(255, 102, 0));
-        jButton3.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("AGREGAR");
-        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
-        add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 110, 30));
-
-        jButton4.setBackground(new java.awt.Color(255, 153, 0));
-        jButton4.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setText("LIMPIAR");
-        jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnModificar.setBackground(new java.awt.Color(255, 102, 0));
+        btnModificar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        btnModificar.setForeground(new java.awt.Color(0, 0, 0));
+        btnModificar.setText("MODIFICAR");
+        btnModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnModificarActionPerformed(evt);
             }
         });
-        add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 380, 120, 30));
+        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 110, 30));
+
+        btnAgregar.setBackground(new java.awt.Color(255, 102, 0));
+        btnAgregar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        btnAgregar.setForeground(new java.awt.Color(0, 0, 0));
+        btnAgregar.setText("AGREGAR");
+        btnAgregar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+        add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 110, 30));
+
+        btnLimpiar.setBackground(new java.awt.Color(255, 153, 0));
+        btnLimpiar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(0, 0, 0));
+        btnLimpiar.setText("LIMPIAR");
+        btnLimpiar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 360, 120, 30));
+
+        txtRUC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        txtRUC.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtRUC.setMinimumSize(new java.awt.Dimension(5, 25));
+        txtRUC.setPreferredSize(new java.awt.Dimension(5, 25));
+        add(txtRUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 170, 30));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+        if (!this.txtRUC.equals("")) {
+
+            if (pd.eliminarProveedor(this.txtRUC.getText())) {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
+            } else {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "No se Elimino el Proveedor");
+            }
+        }
+        else{
+             JOptionPane.showMessageDialog(this, "Ingrese un Ruc");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        limpiar();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+
+        String ruc = this.txtRUC.getText();
+        String nombre = this.txtNombre.getText();
+        String direccion = this.txtDir.getText();
+        String telefono = this.txtCelular.getText();
+
+        p = new Proveedor(ruc, nombre, direccion, telefono);
+
+        if (pd.registrarProveedor(p)) {
+            limpiar();
+            JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+        } else {
+            limpiar();
+            JOptionPane.showMessageDialog(this, "No se registro el Proveedor");
+        }
+
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        if (!this.txtRUC.equals("")) {
+            String ruc = this.txtRUC.getText();
+            String nombre = this.txtNombre.getText();
+            String direccion = this.txtDir.getText();
+            String telefono = this.txtCelular.getText();
+            p = new Proveedor(ruc, nombre, direccion, telefono);
+            if (pd.modificarProveedor(p)) {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "Se Modifico correctamente");
+            } else {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "No se Modifico el Proveedor");
+            }
+        }else{
+             JOptionPane.showMessageDialog(this, "Ingrese un Ruc");
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void tablaProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProveedoresMouseClicked
+        
+        int fila = this.tablaProveedores.rowAtPoint(evt.getPoint());
+        this.txtRUC.setText(this.tablaProveedores.getValueAt(fila, 0).toString());
+        this.txtNombre.setText(this.tablaProveedores.getValueAt(fila, 1).toString());
+        this.txtDir.setText(this.tablaProveedores.getValueAt(fila, 2).toString());
+        this.txtCelular.setText(this.tablaProveedores.getValueAt(fila, 3).toString());
+    }//GEN-LAST:event_tablaProveedoresMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTable tablaProveedores;
+    private javax.swing.JTextField txtCelular;
+    private javax.swing.JTextField txtDir;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JFormattedTextField txtRUC;
     // End of variables declaration//GEN-END:variables
 }

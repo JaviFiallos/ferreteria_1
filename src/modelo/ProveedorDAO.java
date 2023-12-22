@@ -61,7 +61,7 @@ public class ProveedorDAO extends Conexion {
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, cedula);
-            if (ps.execute()) {
+            if (ps.executeUpdate()>0) {
                 return true;
             }
         } catch (Exception e) {
