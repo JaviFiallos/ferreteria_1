@@ -50,6 +50,7 @@ public class FrameAdministrador extends javax.swing.JFrame {
         btnCompras = new javax.swing.JButton();
         btnCategorias = new javax.swing.JButton();
         btnMarcas = new javax.swing.JButton();
+        btnGenericos = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -138,6 +139,18 @@ public class FrameAdministrador extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnMarcas, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 490, 100, 30));
+
+        btnGenericos.setBackground(new java.awt.Color(255, 120, 103));
+        btnGenericos.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
+        btnGenericos.setForeground(new java.awt.Color(0, 0, 0));
+        btnGenericos.setText("Genericos");
+        btnGenericos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
+        btnGenericos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenericosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnGenericos, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 540, 100, 30));
 
         jPanel2.setBackground(new java.awt.Color(237, 234, 222));
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -250,6 +263,11 @@ public class FrameAdministrador extends javax.swing.JFrame {
         this.mostrarPanel(p);
     }//GEN-LAST:event_btnMarcasActionPerformed
 
+    private void btnGenericosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenericosActionPerformed
+       panelGenericos p = new panelGenericos();
+        this.mostrarPanel(p);
+    }//GEN-LAST:event_btnGenericosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -289,6 +307,7 @@ public class FrameAdministrador extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCategorias;
     private javax.swing.JButton btnCompras;
+    private javax.swing.JButton btnGenericos;
     private javax.swing.JButton btnMarcas;
     private javax.swing.JButton btnProducto;
     private javax.swing.JButton btnProveedor;

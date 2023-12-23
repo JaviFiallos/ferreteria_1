@@ -16,6 +16,11 @@ public class Categorias {
         this.nombre = nombre;
         this.ubicaion = ubicaion;
     }
+
+    public Categorias(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
     
     
 
@@ -44,6 +49,11 @@ public class Categorias {
 
     public void setUbicaion(String ubicaion) {
         this.ubicaion = ubicaion;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
     
     

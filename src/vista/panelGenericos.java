@@ -1,39 +1,57 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package vista;
 
 import clases.Categorias;
+import clases.Genericos;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.CategoriasDAO;
+import modelo.GenericosDAO;
 
 /**
  *
  * @author PC
  */
-public class panelCategorias extends javax.swing.JPanel {
+public class panelGenericos extends javax.swing.JPanel {
 
-    private Categorias c;
+    private Genericos c;
+    private GenericosDAO gd = new GenericosDAO();
     private CategoriasDAO cd = new CategoriasDAO();
     private DefaultTableModel modelo;
 
-    public panelCategorias() {
+    private final String sql = "SELECT ID_PRO_GEN, NOM_PRO_GEN, DES_PRO_GEN, ID_CAT_GEN, NOM_CAT FROM "
+            + " productos_genericos INNER JOIN categorias ON productos_genericos.ID_CAT_GEN = categorias.ID_CAT";
+
+    public panelGenericos() {
         initComponents();
         cargarTabla();
+        cargarCombo();
         this.lbl_ID.setVisible(false);
     }
 
     private void limpiar() {
         this.txtNombre.setText("");
-        this.txtUbicacion.setText("");
+        this.txtDescripcion.setText("");
         this.lbl_ID.setText("");
+        this.comboCategorias.setSelectedIndex(0);
         limpiarTabla(modelo);
         cargarTabla();
     }
 
+    public void cargarCombo() {
+
+        List<Categorias> lt = cd.listarCategoria();
+        this.comboCategorias.removeAllItems();
+        DefaultComboBoxModel dc = new DefaultComboBoxModel();
+        comboCategorias.setModel(dc);
+        dc.addElement("Seleccione");
+        for (Categorias t : lt) {
+            dc.addElement(new Categorias(t.getId(), t.getNombre()));
+        }
+
+    }
     public void limpiarTabla(DefaultTableModel model) {
         for (int i = 0; i < model.getRowCount(); i++) {
             model.setRowCount(0);
@@ -43,10 +61,7 @@ public class panelCategorias extends javax.swing.JPanel {
     private void cargarTabla() {
 
         modelo = (DefaultTableModel) tablaProductos.getModel();
-        List<Categorias> lp = cd.listarCategoria();
-        for (Categorias p : lp) {
-            modelo.addRow(new Object[]{p.getId(), p.getNombre(), p.getUbicaion()});
-        }
+        gd.listarQuery(modelo, sql);
         this.tablaProductos.setModel(modelo);
 
     }
@@ -69,9 +84,12 @@ public class panelCategorias extends javax.swing.JPanel {
         btnModificar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
-        txtUbicacion = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         lbl_ID = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        comboCategorias = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
 
         setBackground(new java.awt.Color(255, 218, 157));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -81,11 +99,11 @@ public class panelCategorias extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "NOMBRE", "UBICACION"
+                "ID", "NOMBRE", "DESCRIPCION", "ID CAT", "NOMBRE CAT"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -99,29 +117,29 @@ public class panelCategorias extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tablaProductos);
         if (tablaProductos.getColumnModel().getColumnCount() > 0) {
-            tablaProductos.getColumnModel().getColumn(0).setMinWidth(30);
-            tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(30);
-            tablaProductos.getColumnModel().getColumn(0).setMaxWidth(30);
-            tablaProductos.getColumnModel().getColumn(1).setMinWidth(150);
-            tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(175);
-            tablaProductos.getColumnModel().getColumn(1).setMaxWidth(150);
-            tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(25);
+            tablaProductos.getColumnModel().getColumn(1).setMinWidth(100);
+            tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tablaProductos.getColumnModel().getColumn(1).setMaxWidth(100);
+            tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(150);
+            tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(30);
+            tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(150);
         }
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 430, 260));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, 480, 260));
 
         jLabel1.setFont(new java.awt.Font("Corbel", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("CATEGORIAS");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 20, -1, -1));
+        jLabel1.setText("PRODUCTOS GENERICOS");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("NOMBRE:");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
 
         txtNombre.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, 200, -1));
+        add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 200, -1));
 
         btnEliminar.setBackground(new java.awt.Color(255, 102, 0));
         btnEliminar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -171,22 +189,33 @@ public class panelCategorias extends javax.swing.JPanel {
         });
         add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, 120, 30));
 
-        txtUbicacion.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        add(txtUbicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 200, -1));
-
         jLabel9.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel9.setText("UBICACION:");
-        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
+        jLabel9.setText("CATEGORIA:");
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
 
         lbl_ID.setForeground(new java.awt.Color(255, 218, 157));
-        add(lbl_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 40, 30));
+        add(lbl_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, 40, 30));
+
+        jLabel10.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("DESCRIPCION:");
+        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, -1));
+
+        comboCategorias.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        add(comboCategorias, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 200, -1));
+
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(5);
+        jScrollPane2.setViewportView(txtDescripcion);
+
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, 200, 80));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (!this.lbl_ID.equals("")) {
 
-            if (cd.eliminarCategoria(Integer.valueOf(this.lbl_ID.getText()))) {
+            if (gd.eliminarGenericos(Integer.valueOf(this.lbl_ID.getText()))) {
                 limpiar();
                 JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
             } else {
@@ -194,7 +223,7 @@ public class panelCategorias extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "No se Elimino");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una Categoria");
+            JOptionPane.showMessageDialog(this, "Seleccione un Producto Generico");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -205,9 +234,11 @@ public class panelCategorias extends javax.swing.JPanel {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
         String nombre = this.txtNombre.getText();
-        String ubicacion = this.txtUbicacion.getText();
-        c = new Categorias(nombre, ubicacion);
-        if (cd.registrarCategoria(c)) {
+        String descripcion = this.txtDescripcion.getText();
+        int categoria = ((Categorias) this.comboCategorias.getSelectedItem()).getId();
+        c = new Genericos(nombre, descripcion, categoria);
+
+        if (gd.registrarGenericos(c)) {
             limpiar();
             JOptionPane.showMessageDialog(this, "Se Registro correctamente");
         } else {
@@ -220,10 +251,10 @@ public class panelCategorias extends javax.swing.JPanel {
         if (!this.lbl_ID.equals("")) {
 
             String nombre = this.txtNombre.getText();
-            String ubicacion = this.txtUbicacion.getText();
-            int id = Integer.valueOf(this.lbl_ID.getText());
-            c = new Categorias(id, nombre, ubicacion);
-            if (cd.modificarCategoria(c)) {
+            String descripcion = this.txtDescripcion.getText();
+            int categoria = ((Categorias) this.comboCategorias.getSelectedItem()).getId();
+            c = new Genericos(Integer.valueOf(this.lbl_ID.getText()),nombre, descripcion, categoria);
+            if (gd.modificarGenericos(c)) {
                 limpiar();
                 JOptionPane.showMessageDialog(this, "Se Modifico correctamente");
             } else {
@@ -231,7 +262,7 @@ public class panelCategorias extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "No se Modifico");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una Categoria");
+            JOptionPane.showMessageDialog(this, "Seleccione un Producto");
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -240,7 +271,8 @@ public class panelCategorias extends javax.swing.JPanel {
         int fila = this.tablaProductos.rowAtPoint(evt.getPoint());
         this.lbl_ID.setText(this.tablaProductos.getValueAt(fila, 0).toString());
         this.txtNombre.setText(this.tablaProductos.getValueAt(fila, 1).toString());
-        this.txtUbicacion.setText(this.tablaProductos.getValueAt(fila, 2).toString());
+        this.txtDescripcion.setText(this.tablaProductos.getValueAt(fila, 2).toString());
+        this.comboCategorias.getModel().setSelectedItem(new Categorias(Integer.parseInt(this.tablaProductos.getValueAt(fila, 3).toString()),this.tablaProductos.getValueAt(fila, 4).toString()));
     }//GEN-LAST:event_tablaProductosMouseClicked
 
 
@@ -249,13 +281,16 @@ public class panelCategorias extends javax.swing.JPanel {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JComboBox<String> comboCategorias;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbl_ID;
     private javax.swing.JTable tablaProductos;
+    private javax.swing.JTextArea txtDescripcion;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtUbicacion;
     // End of variables declaration//GEN-END:variables
 }
