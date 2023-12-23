@@ -19,6 +19,23 @@ public class Producto_ {
         this.nombre = nombre;
     }
 
+    public Producto_(String nombre, int idMarca, int idProdGen, String modelo, String descripcion) {
+        this.nombre = nombre;
+        this.idMarca = idMarca;
+        this.idProdGen = idProdGen;
+        this.modelo = modelo;
+        this.descripcion = descripcion;
+    }
+
+    public Producto_(int id, String nombre, int idMarca, int idProdGen, String modelo, String descripcion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.idMarca = idMarca;
+        this.idProdGen = idProdGen;
+        this.modelo = modelo;
+        this.descripcion = descripcion;
+    }
+
     
     
     public String getNombre() {

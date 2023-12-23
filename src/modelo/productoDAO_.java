@@ -5,8 +5,11 @@ import clases.Producto_;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 public class productoDAO_ extends Conexion {
 
@@ -69,7 +72,7 @@ public class productoDAO_ extends Conexion {
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
-            if (ps.execute()) {
+            if (ps.executeUpdate() > 0) {
                 return true;
             }
         } catch (Exception e) {
@@ -83,12 +86,12 @@ public class productoDAO_ extends Conexion {
         String sql = "SELECT ID_PRO, NOM_PRO FROM productos";
         List<Producto_> lista = new ArrayList<>();
 
-          try {
+        try {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-               Producto_ pro = new Producto_();
-                
+                Producto_ pro = new Producto_();
+
                 pro.setId(rs.getInt("ID_PRO"));
                 pro.setNombre(rs.getString("NOM_PRO"));
 
@@ -99,6 +102,27 @@ public class productoDAO_ extends Conexion {
 
         }
         return lista;
+    }
+
+    public void listarQuery(DefaultTableModel modelo, String sql) {
+
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            ResultSetMetaData rsMD = rs.getMetaData();
+            int cantColumnas = rsMD.getColumnCount();
+
+            while (rs.next()) {
+
+                Object[] filas = new Object[cantColumnas];
+                for (int i = 0; i < cantColumnas; i++) {
+                    filas[i] = rs.getObject(i + 1);
+                }
+                modelo.addRow(filas);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
     }
 
 }

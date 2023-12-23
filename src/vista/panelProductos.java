@@ -4,22 +4,83 @@
  */
 package vista;
 
-import java.awt.Color;
+import clases.Genericos;
+import clases.Marca;
+import clases.Producto_;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.GenericosDAO;
+import modelo.MarcaDAO;
+import modelo.productoDAO_;
 
-/**
- *
- * @author PC
- */
 public class panelProductos extends javax.swing.JPanel {
 
-    //private FrameAdministrador fa = new FrameAdministrador();
-    
+    private Producto_ p = new Producto_();
+    private productoDAO_ pd = new productoDAO_();
+    private MarcaDAO md = new MarcaDAO();
+    private GenericosDAO gd = new GenericosDAO();
+    private DefaultTableModel modelo;
+    private final String sql = "SELECT ID_PRO, NOM_PRO, ID_MAR_PRO, NOM_MAR, MOD_PRO, DES_PRO, productos.ID_PRO_GEN, NOM_PRO_GEN FROM "
+            + " productos INNER JOIN marcas ON productos.ID_MAR_PRO = marcas.ID_MAR "
+            + " INNER JOIN productos_genericos ON productos_genericos.ID_PRO_GEN = productos.ID_PRO_GEN";
+
     public panelProductos() {
         initComponents();
+        this.lbl_ID.setVisible(false);
+        cargarTabla();
+        cargarGenericos();
+        cargarMarcas();
     }
 
-    
-    
+    private void limpiar() {
+        this.txtNombre.setText("");
+        this.txtDescr.setText("");
+        this.txtModelo.setText("");
+        this.lbl_ID.setText("");
+        this.comboMarca.setSelectedIndex(0);
+        this.comboTipo.setSelectedIndex(0);
+        limpiarTabla(modelo);
+        cargarTabla();
+    }
+
+    public void cargarMarcas() {
+        List<Marca> lt = md.listarMarca();
+        this.comboMarca.removeAllItems();
+        DefaultComboBoxModel dc = new DefaultComboBoxModel();
+        comboMarca.setModel(dc);
+        dc.addElement("Seleccione");
+        for (Marca t : lt) {
+            dc.addElement(new Marca(t.getId(), t.getNombre()));
+        }
+    }
+
+    public void cargarGenericos() {
+        List<Genericos> lt = gd.listarGenericos();
+        this.comboTipo.removeAllItems();
+        DefaultComboBoxModel dc = new DefaultComboBoxModel();
+        comboTipo.setModel(dc);
+        dc.addElement("Seleccione");
+        for (Genericos t : lt) {
+            dc.addElement(new Genericos(t.getId(), t.getNombre()));
+        }
+    }
+
+    public void limpiarTabla(DefaultTableModel model) {
+        for (int i = 0; i < model.getRowCount(); i++) {
+            model.setRowCount(0);
+        }
+    }
+
+    private void cargarTabla() {
+
+        modelo = (DefaultTableModel) tablaProductos.getModel();
+        gd.listarQuery(modelo, sql);
+        this.tablaProductos.setModel(modelo);
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,29 +102,60 @@ public class panelProductos extends javax.swing.JPanel {
         btnModificar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDescr = new javax.swing.JTextArea();
-        comboCategoria = new javax.swing.JComboBox<>();
         comboMarca = new javax.swing.JComboBox<>();
         comboTipo = new javax.swing.JComboBox<>();
-        txtNombre1 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        lbl_ID = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 218, 157));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        tablaProductos.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-
+                "ID", "NOMBRE", "ID_MARCA", "MARCA", "MODELO", "DESCRIPCION", "ID_TIPO", "TIPO"
             }
-        ));
-        jScrollPane1.setViewportView(tablaProductos);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 60, 430, 280));
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaProductosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaProductos);
+        if (tablaProductos.getColumnModel().getColumnCount() > 0) {
+            tablaProductos.getColumnModel().getColumn(0).setMinWidth(20);
+            tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tablaProductos.getColumnModel().getColumn(0).setMaxWidth(20);
+            tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(50);
+            tablaProductos.getColumnModel().getColumn(2).setMinWidth(22);
+            tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(22);
+            tablaProductos.getColumnModel().getColumn(2).setMaxWidth(22);
+            tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(50);
+            tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(50);
+            tablaProductos.getColumnModel().getColumn(5).setMinWidth(100);
+            tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(100);
+            tablaProductos.getColumnModel().getColumn(5).setMaxWidth(100);
+            tablaProductos.getColumnModel().getColumn(6).setMinWidth(25);
+            tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(25);
+            tablaProductos.getColumnModel().getColumn(6).setMaxWidth(25);
+            tablaProductos.getColumnModel().getColumn(7).setPreferredWidth(50);
+        }
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 60, 540, 280));
 
         jLabel1.setFont(new java.awt.Font("Corbel", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -73,30 +165,25 @@ public class panelProductos extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("NOMBRE:");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 70, -1, -1));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
 
         txtModelo.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        txtModelo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtModeloActionPerformed(evt);
-            }
-        });
-        add(txtModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, 200, -1));
+        add(txtModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 200, -1));
 
         jLabel4.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("MARCA :");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, -1, -1));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("MODELO :");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, -1));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("DESCRIPCION :");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, -1));
 
         btnEliminar.setBackground(new java.awt.Color(255, 102, 0));
         btnEliminar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -108,13 +195,18 @@ public class panelProductos extends javax.swing.JPanel {
                 btnEliminarActionPerformed(evt);
             }
         });
-        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 390, 120, 30));
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 390, 120, 30));
 
         btnModificar.setBackground(new java.awt.Color(255, 102, 0));
         btnModificar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         btnModificar.setForeground(new java.awt.Color(0, 0, 0));
         btnModificar.setText("MODIFICAR");
         btnModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
         add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 390, 110, 30));
 
         btnAgregar.setBackground(new java.awt.Color(255, 102, 0));
@@ -122,6 +214,11 @@ public class panelProductos extends javax.swing.JPanel {
         btnAgregar.setForeground(new java.awt.Color(0, 0, 0));
         btnAgregar.setText("AGREGAR");
         btnAgregar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
         add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 390, 110, 30));
 
         btnLimpiar.setBackground(new java.awt.Color(255, 153, 0));
@@ -136,49 +233,102 @@ public class panelProductos extends javax.swing.JPanel {
         });
         add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 420, 120, 30));
 
-        jLabel7.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("TIPO :");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, -1, -1));
-
         jLabel8.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel8.setText("CATEGORIA :");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, -1, -1));
+        jLabel8.setText("TIPO :");
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, -1, -1));
 
         txtDescr.setColumns(20);
         txtDescr.setRows(5);
         jScrollPane2.setViewportView(txtDescr);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, 200, 60));
-
-        comboCategoria.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
-        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        add(comboCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, 200, -1));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 200, 80));
 
         comboMarca.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
         comboMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        add(comboMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 320, 200, -1));
+        add(comboMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 200, -1));
 
         comboTipo.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
         comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        add(comboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 270, 200, -1));
+        add(comboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 320, 200, -1));
 
-        txtNombre1.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
-        add(txtNombre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 200, -1));
+        txtNombre.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, 200, -1));
+
+        lbl_ID.setForeground(new java.awt.Color(255, 218, 157));
+        add(lbl_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 40, 30));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        // TODO add your handling code here:
+        limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
-    private void txtModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtModeloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtModeloActionPerformed
-
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        if (!this.lbl_ID.equals("")) {
+
+            if (pd.eliminarProducto(Integer.valueOf(this.lbl_ID.getText()))) {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
+            } else {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "No se Elimino");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un Producto ");
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+
+        String nombre = this.txtNombre.getText();
+        String descripcion = this.txtDescr.getText();
+        String modelo2 = this.txtModelo.getText();
+        int tipo = ((Genericos) this.comboTipo.getSelectedItem()).getId();
+        int marca = ((Marca) this.comboMarca.getSelectedItem()).getId();
+        p = new Producto_(nombre, marca, tipo, modelo2, descripcion);
+
+        if (pd.registrarProducto(p)) {
+            limpiar();
+            JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+        } else {
+            limpiar();
+            JOptionPane.showMessageDialog(this, "No se registro");
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+
+        if (!this.lbl_ID.equals("")) {
+
+            String nombre = this.txtNombre.getText();
+            String descripcion = this.txtDescr.getText();
+            String modelo2 = this.txtModelo.getText();
+            int tipo = ((Genericos) this.comboTipo.getSelectedItem()).getId();
+            int marca = ((Marca) this.comboMarca.getSelectedItem()).getId();
+            p = new Producto_(Integer.valueOf(this.lbl_ID.getText()), nombre, marca, tipo, modelo2, descripcion);
+
+            if (pd.modificarProducto(p)) {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "Se Modifico correctamente");
+            } else {
+                limpiar();
+                JOptionPane.showMessageDialog(this, "No se Modifico");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un Producto ");
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void tablaProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductosMouseClicked
+
+        int fila = this.tablaProductos.rowAtPoint(evt.getPoint());
+        this.lbl_ID.setText(this.tablaProductos.getValueAt(fila, 0).toString());
+        this.txtNombre.setText(this.tablaProductos.getValueAt(fila, 1).toString());
+        this.comboMarca.getModel().setSelectedItem(new Marca(Integer.parseInt(this.tablaProductos.getValueAt(fila, 2).toString()),this.tablaProductos.getValueAt(fila, 3).toString()));
+         this.txtModelo.setText(this.tablaProductos.getValueAt(fila, 4).toString());
+        this.txtDescr.setText(this.tablaProductos.getValueAt(fila, 5).toString());
+        this.comboTipo.getModel().setSelectedItem(new Genericos(Integer.parseInt(this.tablaProductos.getValueAt(fila, 6).toString()),this.tablaProductos.getValueAt(fila, 7).toString()));
+    }//GEN-LAST:event_tablaProductosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -186,7 +336,6 @@ public class panelProductos extends javax.swing.JPanel {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JComboBox<String> comboCategoria;
     private javax.swing.JComboBox<String> comboMarca;
     private javax.swing.JComboBox<String> comboTipo;
     private javax.swing.JLabel jLabel1;
@@ -194,13 +343,13 @@ public class panelProductos extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lbl_ID;
     private javax.swing.JTable tablaProductos;
     private javax.swing.JTextArea txtDescr;
     private javax.swing.JTextField txtModelo;
-    private javax.swing.JTextField txtNombre1;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

@@ -19,7 +19,11 @@ public class Marca {
     public Marca() {
     }
 
-    
+    public Marca(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
     public int getId() {
         return id;
     }
@@ -44,4 +48,9 @@ public class Marca {
         this.calidad = ubicaion;
     }
 
+       @Override
+    public String toString() {
+        return nombre;
+    }
+    
 }
