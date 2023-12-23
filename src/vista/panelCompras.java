@@ -1,26 +1,185 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package vista;
 
+import clases.Compra;
+import clases.Kardex;
+import clases.Producto_;
+import clases.Proveedor;
+import clases.Validacion;
 import java.awt.Color;
+import java.awt.event.ItemEvent;
+import static java.lang.Math.round;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import modelo.CompraDAO;
+import modelo.KardexDAO;
+import modelo.ProveedorDAO;
+import modelo.productoDAO_;
 
-/**
- *
- * @author PC
- */
 public class panelCompras extends javax.swing.JPanel {
 
-    /**
-     * Creates new form panelAdminUsuarios
-     */
+    private double totalPagar = 0.00;
+    private int item;
+    private DefaultTableModel modelo6 = new DefaultTableModel();
+
+    private Compra c = new Compra();
+    private CompraDAO cd = new CompraDAO();
+    private Kardex k = new Kardex();
+    private KardexDAO kd = new KardexDAO();
+
+    private productoDAO_ pd = new productoDAO_();
+    private ProveedorDAO pv = new ProveedorDAO();
+
     public panelCompras() {
         initComponents();
+        cargarProductos();
+        cargarProveedores();
     }
 
-    
-    
+    private void agregarProducto() {
+        item = item + 1;
+        this.modelo6 = (DefaultTableModel) this.tablaNuevaCompra.getModel();
+        int id = ((Producto_) this.comboProductos.getSelectedItem()).getId();
+        //String cod = ((Producto) this.comboProdComp.getSelectedItem()).getCodigo();;
+        String descripcion = ((Producto_) this.comboProductos.getSelectedItem()).getNombre();
+        Double precio = round((Double.parseDouble(this.txtPrecio.getText())) * 100) / 100.0;
+        int cantidad = Integer.parseInt(this.txtCantidad.getText());
+        double total = precio * cantidad;
+
+        for (int i = 0; i < this.tablaNuevaCompra.getRowCount(); i++) {
+
+            if (this.tablaNuevaCompra.getValueAt(i, 0).equals(((Producto_) this.comboProductos.getSelectedItem()).getId())) {
+                JOptionPane.showMessageDialog(null, "El producto ya esta registrado");
+                return;
+            }
+        }
+
+        ArrayList a = new ArrayList();
+        a.add(item);
+        a.add(id);
+        a.add(descripcion);
+        a.add(cantidad);
+        a.add(precio);
+        a.add(total);
+
+        Object[] o = new Object[5];
+        o[0] = a.get(1);
+        o[1] = a.get(2);
+        o[2] = a.get(3);
+        o[3] = a.get(4);
+        o[4] = a.get(5);
+        modelo6.addRow(o);
+        tablaNuevaCompra.setModel(modelo6);
+
+    }
+
+    private void totalPagar() {
+
+        totalPagar = 0.00;
+        int numFila = this.tablaNuevaCompra.getRowCount();
+        for (int i = 0; i < numFila; i++) {
+            double c = Double.parseDouble(String.valueOf(tablaNuevaCompra.getModel().getValueAt(i, 4)));
+            totalPagar = totalPagar + c;
+        }
+        this.lblTotal.setText(String.format("%.2f", totalPagar));
+    }
+
+    private void cargarProductos() {
+        List<Producto_> lt = pd.listarProducto();
+        this.comboProductos.removeAllItems();
+        DefaultComboBoxModel dc = new DefaultComboBoxModel();
+        comboProductos.setModel(dc);
+        dc.addElement("Seleccione");
+        for (Producto_ t : lt) {
+            dc.addElement(new Producto_(t.getId(), t.getNombre()));
+        }
+    }
+
+    private void cargarProveedores() {
+        List<Proveedor> lt = pv.listarProveedor();
+        this.comboProveedor.removeAllItems();
+        DefaultComboBoxModel dc = new DefaultComboBoxModel();
+        comboProveedor.setModel(dc);
+        dc.addElement("Seleccione");
+        for (Proveedor t : lt) {
+            dc.addElement(new Proveedor(t.getRuc(), t.getNombre(), t.getDireccion(), t.getTelefono()));
+        }
+    }
+
+    private void borrarSeleccion(JTable tabla, DefaultTableModel modelo) {
+        if (tabla.getSelectedRow() >= 0) {
+            modelo = (DefaultTableModel) tabla.getModel();
+            modelo.removeRow(tabla.getSelectedRow());
+            limpiarParcial();
+            totalPagar();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "No se selecciono nada ");
+        }
+    }
+
+    private void registrarCompra() {
+
+        String id = ((Proveedor) this.comboProveedor.getSelectedItem()).getRuc();
+        c = new Compra(totalPagar, id);
+        if (cd.registrarCompra(c)) {
+
+            registrarCompraKardex();
+            //
+            JOptionPane.showMessageDialog(null, "Su compra ha sido realizada con exito");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Su compra no se efectuo :(");
+        }
+
+    }
+
+    private void registrarCompraKardex() {
+
+        int idCompra = kd.idCompra();
+        int cantE = 0;
+        for (int i = 0; i < this.tablaNuevaCompra.getRowCount(); i++) {
+            int idProd = Integer.parseInt(this.tablaNuevaCompra.getValueAt(i, 0).toString());
+            double precio = Double.parseDouble(this.tablaNuevaCompra.getValueAt(i, 3).toString());
+            cantE = Integer.parseInt(this.tablaNuevaCompra.getValueAt(i, 2).toString());//Por producto, esto sera para devoluciones      
+            k.setProducto(idProd);
+            k.setDetalle("COMPRA");
+            k.setCompra(idCompra);
+            k.setPrecioUnitario(precio);
+            k.setEntrada(cantE);
+            kd.agregarKardexCompra(k);
+        }
+    }
+
+    private void limpiarTotal() {
+
+        this.txtCantidad.setText("");
+        this.txtPrecio.setText("");
+        this.comboProductos.setSelectedIndex(0);
+        this.comboProveedor.setSelectedIndex(0);
+        this.comboProveedor.setEnabled(true);
+        limpiarTabla(modelo6);
+        this.lblTotal.setText("----");
+
+    }
+
+    private void limpiarParcial() {
+
+        this.txtCantidad.setText("");
+        this.txtPrecio.setText("");
+        this.comboProductos.setSelectedIndex(0);
+
+    }
+
+    private void limpiarTabla(DefaultTableModel model) {
+        for (int i = 0; i < model.getRowCount(); i++) {
+            model.setRowCount(0);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,61 +190,59 @@ public class panelCompras extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaCompras = new javax.swing.JTable();
+        tablaNuevaCompra = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         btnEliminar = new javax.swing.JButton();
         btnComprar = new javax.swing.JButton();
         btnAniadir = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        comboTipo = new javax.swing.JComboBox<>();
-        comboMarca = new javax.swing.JComboBox<>();
+        comboProductos = new javax.swing.JComboBox<>();
         comboProveedor = new javax.swing.JComboBox<>();
-        comboCategoria = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        lblTotal = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JFormattedTextField();
+        txtPrecio = new javax.swing.JFormattedTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 218, 157));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tablaCompras.setModel(new javax.swing.table.DefaultTableModel(
+        tablaNuevaCompra.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-
+                "ID", "NOMBRE", "CANTIDAD", "PRECIO", "TOTAL"
             }
         ));
-        jScrollPane1.setViewportView(tablaCompras);
+        jScrollPane1.setViewportView(tablaNuevaCompra);
+        if (tablaNuevaCompra.getColumnModel().getColumnCount() > 0) {
+            tablaNuevaCompra.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tablaNuevaCompra.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tablaNuevaCompra.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tablaNuevaCompra.getColumnModel().getColumn(3).setPreferredWidth(50);
+            tablaNuevaCompra.getColumnModel().getColumn(4).setPreferredWidth(50);
+        }
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 100, 430, 260));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 100, 510, 270));
 
         jLabel1.setFont(new java.awt.Font("Corbel", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("COMPRAS");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 20, -1, -1));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("PROVEEDOR:");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setText("MARCA :");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 160, -1, -1));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("PRECIO :");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 260, -1, -1));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, -1, -1));
 
         btnEliminar.setBackground(new java.awt.Color(255, 102, 0));
         btnEliminar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -104,14 +261,24 @@ public class panelCompras extends javax.swing.JPanel {
         btnComprar.setForeground(new java.awt.Color(0, 0, 0));
         btnComprar.setText("COMPRAR !");
         btnComprar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
-        add(btnComprar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, 110, 30));
+        btnComprar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnComprarActionPerformed(evt);
+            }
+        });
+        add(btnComprar, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 410, 110, 30));
 
         btnAniadir.setBackground(new java.awt.Color(255, 102, 0));
         btnAniadir.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         btnAniadir.setForeground(new java.awt.Color(0, 0, 0));
         btnAniadir.setText("AÑADIR AL CARRITO");
         btnAniadir.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 51), new java.awt.Color(255, 204, 102), null, null));
-        add(btnAniadir, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 350, 160, 30));
+        btnAniadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAniadirActionPerformed(evt);
+            }
+        });
+        add(btnAniadir, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, 160, 30));
 
         btnLimpiar.setBackground(new java.awt.Color(255, 153, 0));
         btnLimpiar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -127,77 +294,123 @@ public class panelCompras extends javax.swing.JPanel {
 
         jLabel7.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("TIPO PRODUCTO :");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
+        jLabel7.setText("PRODUCTO :");
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
 
-        jLabel8.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel8.setText("CATEGORIA :");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
-
-        comboTipo.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
-        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        add(comboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, 200, -1));
-
-        comboMarca.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
-        comboMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        add(comboMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 200, -1));
+        comboProductos.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
+        comboProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        add(comboProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 200, -1));
 
         comboProveedor.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
         comboProveedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        add(comboProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 200, -1));
-
-        comboCategoria.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
-        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        add(comboCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 200, 200, -1));
-
-        jLabel6.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel6.setText("----");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 410, -1, -1));
-
-        jFormattedTextField1.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
-        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextField1ActionPerformed(evt);
+        comboProveedor.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboProveedorItemStateChanged(evt);
             }
         });
-        add(jFormattedTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 200, -1));
+        add(comboProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 200, -1));
 
-        jFormattedTextField2.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
-        jFormattedTextField2.addActionListener(new java.awt.event.ActionListener() {
+        lblTotal.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
+        lblTotal.setForeground(new java.awt.Color(0, 0, 255));
+        lblTotal.setText("----");
+        add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 420, -1, -1));
+
+        txtCantidad.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
+        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextField2ActionPerformed(evt);
+                txtCantidadActionPerformed(evt);
             }
         });
-        add(jFormattedTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 200, -1));
+        add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 200, -1));
+
+        txtPrecio.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
+        txtPrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrecioActionPerformed(evt);
+            }
+        });
+        add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 200, -1));
 
         jLabel9.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("CANTIDAD :");
-        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, -1, -1));
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("TOTAL A PAGAR:");
-        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 410, -1, -1));
+        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 420, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        borrarSeleccion(this.tablaNuevaCompra, modelo6);
+        this.comboProductos.requestFocus();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        // TODO add your handling code here:
+        limpiarTotal();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
-    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
+    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
+    }//GEN-LAST:event_txtCantidadActionPerformed
 
-    private void jFormattedTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField2ActionPerformed
+    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField2ActionPerformed
+    }//GEN-LAST:event_txtPrecioActionPerformed
+
+    private void btnAniadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirActionPerformed
+        if (!this.txtPrecio.getText().equals("") && !this.txtCantidad.getText().equals("") && this.comboProductos.getSelectedIndex() != 0
+                && this.comboProveedor.getSelectedIndex() != 0) {
+
+            if (Validacion.esDouble(this.txtPrecio.getText())) {
+                if (Validacion.esEntero(this.txtCantidad.getText())) {
+                    if (Double.parseDouble(this.txtPrecio.getText()) * Integer.parseInt(this.txtCantidad.getText()) != 0) {
+                        agregarProducto();
+                        limpiarParcial();
+                        this.comboProductos.requestFocus();
+                        totalPagar();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El precio no debe ser 0");
+                    }
+
+                } else {
+                    //this.txtCantCompra.setText("");
+                    JOptionPane.showMessageDialog(null, "Ingrese un numero entero mayor a cero");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingrese un precio valido, use el punto (.) para los decimales");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Hay campos Vacios");
+        }
+    }//GEN-LAST:event_btnAniadirActionPerformed
+
+    private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
+
+        if (this.tablaNuevaCompra.getRowCount() > 0) {
+            int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de comprar estos productos");
+            if (pregunta == 0) {
+                registrarCompra();
+
+                limpiarTotal();
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese al menos un producto");
+        }
+
+    }//GEN-LAST:event_btnComprarActionPerformed
+
+    private void comboProveedorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboProveedorItemStateChanged
+        if (this.comboProveedor.getSelectedIndex() != 0) {
+            if (evt.getStateChange() == ItemEvent.SELECTED) {
+                this.comboProveedor.setEnabled(false);
+                this.comboProductos.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_comboProveedorItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -205,22 +418,18 @@ public class panelCompras extends javax.swing.JPanel {
     private javax.swing.JButton btnComprar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
-    private javax.swing.JComboBox<String> comboCategoria;
-    private javax.swing.JComboBox<String> comboMarca;
+    private javax.swing.JComboBox<String> comboProductos;
     private javax.swing.JComboBox<String> comboProveedor;
-    private javax.swing.JComboBox<String> comboTipo;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tablaCompras;
+    private javax.swing.JLabel lblTotal;
+    private javax.swing.JTable tablaNuevaCompra;
+    private javax.swing.JFormattedTextField txtCantidad;
+    private javax.swing.JFormattedTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 }

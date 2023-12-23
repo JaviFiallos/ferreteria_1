@@ -13,6 +13,13 @@ public class Proveedor {
         this.telefono = telefono;
     }
 
+    public Proveedor(String ruc, String nombre) {
+        this.ruc = ruc;
+        this.nombre = nombre;
+    }
+    
+    
+
     public Proveedor() {
     }
 

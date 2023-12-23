@@ -87,5 +87,10 @@ public class Producto_ {
         this.descripcion = descripcion;
     }
     
+     
+    @Override
+    public String toString() {
+        return this.nombre;
+    }
     
 }
