@@ -215,7 +215,7 @@ public class panelProveedores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        if (!this.txtRUC.equals("")) {
+        if (!this.txtRUC.getText().equals("")) {
             String ruc = this.txtRUC.getText();
             String nombre = this.txtNombre.getText();
             String direccion = this.txtDir.getText();

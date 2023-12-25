@@ -4,6 +4,9 @@
  */
 package vista;
 
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Kiwar
@@ -12,10 +15,12 @@ public class FrameVenta extends javax.swing.JFrame {
 
     /**
      * Creates new form FrameVenta
+     * @param ced
      */
-    public FrameVenta() {
+    public FrameVenta(String ced) {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.lbUser.setText(ced);
     }
 
     /**
@@ -30,7 +35,11 @@ public class FrameVenta extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        btn = new javax.swing.JButton();
+        btnVender = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnDevolucion = new javax.swing.JButton();
+        lbUser = new javax.swing.JLabel();
+        btnCredito = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -45,16 +54,45 @@ public class FrameVenta extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Iconos/usuario.png"))); // NOI18N
         jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 140, 149));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 150, 160));
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 170, 230, -1));
 
-        btn.setText("Botton");
-        btn.addActionListener(new java.awt.event.ActionListener() {
+        btnVender.setText("Vender");
+        btnVender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActionPerformed(evt);
+                btnVenderActionPerformed(evt);
             }
         });
-        jPanel1.add(btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
+        jPanel1.add(btnVender, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 90, -1));
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 90, -1));
+
+        btnDevolucion.setText("Devolucion");
+        btnDevolucion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDevolucionActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnDevolucion, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, -1, -1));
+
+        lbUser.setFont(new java.awt.Font("Franklin Gothic Demi Cond", 0, 24)); // NOI18N
+        lbUser.setText(" ");
+        lbUser.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(lbUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 210, -1));
+
+        btnCredito.setText("Credito");
+        btnCredito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreditoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnCredito, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, 90, -1));
 
         jPanel2.setBackground(new java.awt.Color(237, 234, 222));
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -105,7 +143,7 @@ public class FrameVenta extends javax.swing.JFrame {
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 381, Short.MAX_VALUE)
+            .addGap(0, 476, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -133,9 +171,38 @@ public class FrameVenta extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActionPerformed
+    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnActionPerformed
+        panelVentas p = new panelVentas(this.lbUser.getText());
+        this.mostrarPanel(p);
+    }//GEN-LAST:event_btnVenderActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+        panelBuscar p = new panelBuscar();
+        this.mostrarPanel(p);
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnDevolucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolucionActionPerformed
+        // TODO add your handling code here:
+        panelDevoluciones p = new panelDevoluciones();
+        this.mostrarPanel(p);
+    }//GEN-LAST:event_btnDevolucionActionPerformed
+
+    private void btnCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreditoActionPerformed
+        // TODO add your handling code here:
+        panelCredito p = new panelCredito();
+        this.mostrarPanel(p);
+    }//GEN-LAST:event_btnCreditoActionPerformed
+    public void mostrarPanel(JPanel p) {
+
+        p.setSize(901, 480);
+        p.setLocation(0, 0);
+        panelPrincipal.removeAll();
+        panelPrincipal.add(p, BorderLayout.CENTER);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+    }
 
     /**
      * @param args the command line arguments
@@ -167,13 +234,16 @@ public class FrameVenta extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameVenta().setVisible(true);
+                new FrameVenta("1").setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCredito;
+    private javax.swing.JButton btnDevolucion;
+    private javax.swing.JButton btnVender;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -181,6 +251,7 @@ public class FrameVenta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lbUser;
     private javax.swing.JPanel panelPrincipal;
     // End of variables declaration//GEN-END:variables
 }

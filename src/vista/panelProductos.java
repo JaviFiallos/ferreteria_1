@@ -298,14 +298,14 @@ public class panelProductos extends javax.swing.JPanel {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
 
-        if (!this.lbl_ID.equals("")) {
+        if (!this.lbl_ID.getText().equals("")) {
 
             String nombre = this.txtNombre.getText();
             String descripcion = this.txtDescr.getText();
             String modelo2 = this.txtModelo.getText();
             int tipo = ((Genericos) this.comboTipo.getSelectedItem()).getId();
             int marca = ((Marca) this.comboMarca.getSelectedItem()).getId();
-            p = new Producto_(Integer.valueOf(this.lbl_ID.getText()), nombre, marca, tipo, modelo2, descripcion);
+            p = new Producto_(Integer.parseInt(this.lbl_ID.getText()), nombre, marca, tipo, modelo2, descripcion);
 
             if (pd.modificarProducto(p)) {
                 limpiar();

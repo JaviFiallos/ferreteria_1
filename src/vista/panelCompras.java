@@ -5,7 +5,6 @@ import clases.Kardex;
 import clases.Producto_;
 import clases.Proveedor;
 import clases.Validacion;
-import java.awt.Color;
 import java.awt.event.ItemEvent;
 import static java.lang.Math.round;
 import java.util.ArrayList;
@@ -126,9 +125,7 @@ public class panelCompras extends javax.swing.JPanel {
         String id = ((Proveedor) this.comboProveedor.getSelectedItem()).getRuc();
         c = new Compra(totalPagar, id);
         if (cd.registrarCompra(c)) {
-
             registrarCompraKardex();
-            //
             JOptionPane.showMessageDialog(null, "Su compra ha sido realizada con exito");
 
         } else {
@@ -362,7 +359,6 @@ public class panelCompras extends javax.swing.JPanel {
     private void btnAniadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirActionPerformed
         if (!this.txtPrecio.getText().equals("") && !this.txtCantidad.getText().equals("") && this.comboProductos.getSelectedIndex() != 0
                 && this.comboProveedor.getSelectedIndex() != 0) {
-
             if (Validacion.esDouble(this.txtPrecio.getText())) {
                 if (Validacion.esEntero(this.txtCantidad.getText())) {
                     if (Double.parseDouble(this.txtPrecio.getText()) * Integer.parseInt(this.txtCantidad.getText()) != 0) {

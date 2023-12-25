@@ -124,9 +124,7 @@ public class productoDAO_ extends Conexion {
             System.out.println(ex);
         }
     }
-
 }
-
 // genericos
 /*   
     public boolean registrarProducto(Producto_ p) {

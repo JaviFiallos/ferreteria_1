@@ -10,7 +10,7 @@ public class Validacion {
 
     public static final int num_provincias = 24;
 
-    public boolean validadorDeCedula(String cedula) {
+    public static boolean validadorDeCedula(String cedula) {
         boolean cedulaCorrecta = false;
         try {
 
@@ -51,16 +51,11 @@ public class Validacion {
         return cedulaCorrecta;
     }
 
-    public boolean RucPersonaNatural(String ruc) {
-
+    public static boolean RucPersonaNatural(String ruc) {
         if (ruc.length() != 13) {
             return false;
         }
-
-        if (!ruc.substring(10, 13).equals("001") || !validadorDeCedula(ruc.substring(0, 10))) {
-            return false;
-        }
-        return true;
+        return !(!ruc.substring(10, 13).equals("001") || !validadorDeCedula(ruc.substring(0, 10)));
     }
 
     public static boolean esEntero(String cadena) {
@@ -75,7 +70,7 @@ public class Validacion {
         return patron.matcher(cadena).matches();
     }
 
-    public String eliminarEspacios(String cadena) {
+    public static String eliminarEspacios(String cadena) {
         // Eliminar espacios duplicados y espacios al inicio y final
         String cadenaLimpia = cadena.trim().replaceAll("\\s+", " ");
         return cadenaLimpia;
@@ -104,8 +99,8 @@ public class Validacion {
         }
     }
 
-    public boolean alMenosDosPalabras(int n, String cadena) {
-        String cadenaLimpia = eliminarEspacios(cadena);
+    public static boolean alMenosDosPalabras(int n, String cadena) {
+        String  cadenaLimpia = eliminarEspacios(cadena);
         if (!cadenaLimpia.matches("[a-zA-Z\\s]*")) {
             return false;
         }
