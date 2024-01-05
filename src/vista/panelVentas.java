@@ -138,6 +138,7 @@ public class panelVentas extends javax.swing.JPanel {
         v.setTotal(this.totalPagar);
         v.setCedCliente(this.txtCedula.getText());
         v.setCedVendedor(cedVendedor);
+        v.setCedCliente("Cliente final");
         if (vd.registrarVenta(v)) {
 
             registrarVentaKardex();
@@ -145,7 +146,7 @@ public class panelVentas extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Su compra ha sido realizada con exito");
 
         } else {
-            JOptionPane.showMessageDialog(null, "Su compra no se efectuo :(");
+            JOptionPane.showMessageDialog(null, "Su compra no se efectuo");
         }
 
     }
