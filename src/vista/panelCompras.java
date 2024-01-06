@@ -312,10 +312,16 @@ public class panelCompras extends javax.swing.JPanel {
         lblTotal.setText("----");
         add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 420, -1, -1));
 
+        txtCantidad.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0"))));
         txtCantidad.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
         txtCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCantidadActionPerformed(evt);
+            }
+        });
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
             }
         });
         add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 200, -1));
@@ -324,6 +330,11 @@ public class panelCompras extends javax.swing.JPanel {
         txtPrecio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPrecioActionPerformed(evt);
+            }
+        });
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
             }
         });
         add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 200, -1));
@@ -407,6 +418,28 @@ public class panelCompras extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_comboProveedorItemStateChanged
+
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+
+        char c = evt.getKeyChar();
+        boolean puntoIngresado = false;
+        // Permitir solo números y un solo punto
+        if (!(Character.isDigit(c) || (c == '.' && !puntoIngresado && txtPrecio.getText().indexOf('.') == -1))) {
+            evt.consume(); // Ignorar el carácter ingresado si no es un número o el segundo punto
+        }
+
+        if (c == '.' && !puntoIngresado) {
+            puntoIngresado = true; // Marcar que se ingresó el punto
+        }
+    }//GEN-LAST:event_txtPrecioKeyTyped
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        char c = evt.getKeyChar();
+
+        if (!(Character.isDigit(c))) {
+            evt.consume(); // Ignorar el carácter ingresado si no es un número o el segundo punto
+        }
+    }//GEN-LAST:event_txtCantidadKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -9,9 +9,10 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import clases.Conexion;
 import modelo.UsuarioDAO;
-import clases.hash;
 import clases.Usuario;
 import modelo.usuarioEstatico;
+import vista.FrameAdministrador;
+import vista.FrameVenta;
 import vista.frameLogin1;
 
 public class configVentanaLog implements MouseListener {
@@ -65,10 +66,14 @@ public class configVentanaLog implements MouseListener {
                 //##############################################################
                 if (cn.testConnection()) {
                     if (cu.iniciarSesion(mu)) {
-                        JOptionPane.showMessageDialog(null, "Se inicio sesion");
                         this.fr.dispose();
-                        //frameHome fh = new frameHome();
-                        //fh.setVisible(true);
+                        if(mu.isRol()){
+                            FrameAdministrador fa = new FrameAdministrador();
+                            fa.setVisible(true);
+                        }else{
+                            FrameVenta fv = new FrameVenta();
+                            fv.setVisible(true);
+                        }
                     }else{
                     JOptionPane.showMessageDialog(null, "Datos Incorrectos");
                     }

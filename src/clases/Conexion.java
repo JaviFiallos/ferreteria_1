@@ -9,7 +9,7 @@ public class Conexion {
     
     private final String BASE = "ferreteria_1";
     private final String USER = "root";
-    private final String PASSWORD = "root";
+    private final String PASSWORD = "1805162433";
     private final String URL = "jdbc:mysql://127.0.0.1/" + BASE;
     private Connection con = null;
 

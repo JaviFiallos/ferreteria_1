@@ -5,6 +5,7 @@
 package vista;
 
 import clases.Categorias;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -121,6 +122,11 @@ public class panelCategorias extends javax.swing.JPanel {
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
 
         txtNombre.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
         add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, 200, -1));
 
         btnEliminar.setBackground(new java.awt.Color(255, 102, 0));
@@ -172,6 +178,11 @@ public class panelCategorias extends javax.swing.JPanel {
         add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, 120, 30));
 
         txtUbicacion.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtUbicacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUbicacionKeyTyped(evt);
+            }
+        });
         add(txtUbicacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 200, -1));
 
         jLabel9.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
@@ -242,6 +253,20 @@ public class panelCategorias extends javax.swing.JPanel {
         this.txtNombre.setText(this.tablaProductos.getValueAt(fila, 1).toString());
         this.txtUbicacion.setText(this.tablaProductos.getValueAt(fila, 2).toString());
     }//GEN-LAST:event_tablaProductosMouseClicked
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+       char c = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_SPACE || c == '-')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtUbicacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUbicacionKeyTyped
+      char c = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_SPACE || c == '-')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtUbicacionKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

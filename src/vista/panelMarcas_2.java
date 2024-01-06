@@ -97,6 +97,11 @@ public class panelMarcas_2 extends javax.swing.JPanel {
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
 
         txtNombre.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
         add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, 200, -1));
 
         btnEliminar.setBackground(new java.awt.Color(255, 102, 0));
@@ -161,7 +166,7 @@ public class panelMarcas_2 extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        if (!this.lbl_ID.equals("")) {
+        if (!this.lbl_ID.getText().isEmpty()) {
 
             if (cd.eliminarMarca(Integer.valueOf(this.lbl_ID.getText()))) {
                 limpiar();
@@ -181,26 +186,30 @@ public class panelMarcas_2 extends javax.swing.JPanel {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
-        if (this.comboCalidad.getSelectedIndex() != 0) {
-            String nombre = this.txtNombre.getText();
-            String ubicacion = this.comboCalidad.getSelectedItem().toString();
-            c = new Marca(nombre, ubicacion);
-            if (cd.registrarMarca(c)) {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+        if (!this.txtNombre.getText().equals("")) {
+            if (this.comboCalidad.getSelectedIndex() != 0) {
+                String nombre = this.txtNombre.getText();
+                String ubicacion = this.comboCalidad.getSelectedItem().toString();
+                c = new Marca(nombre, ubicacion);
+                if (cd.registrarMarca(c)) {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+                } else {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "No se registro");
+                }
             } else {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "No se registro");
+                JOptionPane.showMessageDialog(this, "Seleccione la calidad");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione la calidad");
+            JOptionPane.showMessageDialog(this, "Ingrese una Marca");
         }
+
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        if (!this.lbl_ID.equals("")) {
-
+        if (!this.lbl_ID.getText().isEmpty()) {
             if (this.comboCalidad.getSelectedIndex() != 0) {
                 String nombre = this.txtNombre.getText();
                 String ubicacion = this.comboCalidad.getSelectedItem().toString();
@@ -230,6 +239,13 @@ public class panelMarcas_2 extends javax.swing.JPanel {
         this.txtNombre.setText(this.tablaProductos.getValueAt(fila, 1).toString());
         this.comboCalidad.getModel().setSelectedItem(this.tablaProductos.getValueAt(fila, 2).toString());
     }//GEN-LAST:event_tablaProductosMouseClicked
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isLetterOrDigit(c) && c != '-') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
