@@ -29,17 +29,17 @@ public class panelProveedores extends javax.swing.JPanel {
         cargarTabla();
     }
 
-    private void cargarTabla(){
-    
-        String titulos [] = {"RUC","NOMBRE","DIRECCION","TELEFONO"};
-        modelo  = new DefaultTableModel(titulos, 0);
+    private void cargarTabla() {
+
+        String titulos[] = {"RUC", "NOMBRE", "DIRECCION", "TELEFONO"};
+        modelo = new DefaultTableModel(titulos, 0);
         List<Proveedor> lp = pd.listarProveedor();
         for (Proveedor p : lp) {
-            modelo.addRow(new Object[]{p.getRuc(),p.getNombre(),p.getDireccion(),p.getTelefono()});
+            modelo.addRow(new Object[]{p.getRuc(), p.getNombre(), p.getDireccion(), p.getTelefono()});
         }
         this.tablaProveedores.setModel(modelo);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -101,6 +101,11 @@ public class panelProveedores extends javax.swing.JPanel {
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
 
         txtNombre.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
         add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 170, -1));
 
         jLabel5.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
@@ -109,6 +114,11 @@ public class panelProveedores extends javax.swing.JPanel {
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
 
         txtDir.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtDir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDirKeyTyped(evt);
+            }
+        });
         add(txtDir, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, 170, -1));
 
         jLabel6.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
@@ -117,6 +127,11 @@ public class panelProveedores extends javax.swing.JPanel {
         add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, -1, -1));
 
         txtCelular.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtCelular.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCelularKeyTyped(evt);
+            }
+        });
         add(txtCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, 170, -1));
 
         btnEliminar.setBackground(new java.awt.Color(255, 102, 0));
@@ -171,23 +186,31 @@ public class panelProveedores extends javax.swing.JPanel {
         txtRUC.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
         txtRUC.setMinimumSize(new java.awt.Dimension(5, 25));
         txtRUC.setPreferredSize(new java.awt.Dimension(5, 25));
+        txtRUC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtRUCKeyTyped(evt);
+            }
+        });
         add(txtRUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 170, 30));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-        if (!this.txtRUC.equals("")) {
+        if (!this.txtRUC.getText().isEmpty()) {
 
-            if (pd.eliminarProveedor(this.txtRUC.getText())) {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
-            } else {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "No se Elimino el Proveedor");
+            int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de Eliminar este registro");
+            if (pregunta == 0) {
+                if (pd.eliminarProveedor(this.txtRUC.getText())) {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
+                } else {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "No se Elimino el Proveedor");
+                }
             }
-        }
-        else{
-             JOptionPane.showMessageDialog(this, "Seleccione un Proveedor");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un Proveedor");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -197,50 +220,108 @@ public class panelProveedores extends javax.swing.JPanel {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
-        String ruc = this.txtRUC.getText();
-        String nombre = this.txtNombre.getText();
-        String direccion = this.txtDir.getText();
-        String telefono = this.txtCelular.getText();
-
-        p = new Proveedor(ruc, nombre, direccion, telefono);
-
-        if (pd.registrarProveedor(p)) {
-            limpiar();
-            JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+//        if (this.txtRUC.getText().isEmpty() || this.txtNombre.getText().isEmpty()
+//                || this.txtDir.getText().isEmpty() || this.txtCelular.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(this, "Complete todos los campos");
+//        } else {
+//            
+//        }
+        if (this.txtRUC.getText().isEmpty() || this.txtNombre.getText().isEmpty()
+                || this.txtDir.getText().isEmpty() || this.txtCelular.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Complete todos los campos");
         } else {
-            limpiar();
-            JOptionPane.showMessageDialog(this, "No se registro el Proveedor");
-        }
-
-    }//GEN-LAST:event_btnAgregarActionPerformed
-
-    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        if (!this.txtRUC.getText().equals("")) {
             String ruc = this.txtRUC.getText();
             String nombre = this.txtNombre.getText();
             String direccion = this.txtDir.getText();
             String telefono = this.txtCelular.getText();
+
             p = new Proveedor(ruc, nombre, direccion, telefono);
-            if (pd.modificarProveedor(p)) {
+
+            if (pd.registrarProveedor(p)) {
                 limpiar();
-                JOptionPane.showMessageDialog(this, "Se Modifico correctamente");
+                JOptionPane.showMessageDialog(this, "Se Registro correctamente");
             } else {
                 limpiar();
-                JOptionPane.showMessageDialog(this, "No se Modifico el Proveedor");
+                JOptionPane.showMessageDialog(this, "No se registro el Proveedor");
             }
-        }else{
-             JOptionPane.showMessageDialog(this, "Ingrese un Ruc");
+        }
+
+
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        if (!this.txtRUC.getText().isEmpty()) {
+            if (this.txtNombre.getText().isEmpty()
+                    || this.txtDir.getText().isEmpty() || this.txtCelular.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Complete todos los campos");
+            } else {
+                String ruc = this.txtRUC.getText();
+                String nombre = this.txtNombre.getText();
+                String direccion = this.txtDir.getText();
+                String telefono = this.txtCelular.getText();
+                p = new Proveedor(ruc, nombre, direccion, telefono);
+                if (pd.modificarProveedor(p)) {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "Se Modifico correctamente");
+                } else {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "No se Modifico el Proveedor");
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Escoja un proveedor a Modificar");
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void tablaProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProveedoresMouseClicked
-        
+
         int fila = this.tablaProveedores.rowAtPoint(evt.getPoint());
         this.txtRUC.setText(this.tablaProveedores.getValueAt(fila, 0).toString());
         this.txtNombre.setText(this.tablaProveedores.getValueAt(fila, 1).toString());
         this.txtDir.setText(this.tablaProveedores.getValueAt(fila, 2).toString());
         this.txtCelular.setText(this.tablaProveedores.getValueAt(fila, 3).toString());
     }//GEN-LAST:event_tablaProveedoresMouseClicked
+
+    private void txtRUCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRUCKeyTyped
+
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) || txtRUC.getText().length() >= 13) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtRUCKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+
+        char c = evt.getKeyChar();
+        String text = this.txtNombre.getText();
+        int espacios = 0;
+        boolean validar = text.contains(" ");
+        for (char ch : text.toCharArray()) {
+            if (ch == ' ') {
+                espacios++;
+            }
+        }
+        if ((!Character.isLetter(c) && !Character.isSpaceChar(c)) || (validar && !Character.isLetter(c)) || espacios > 1 || text.length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtCelularKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCelularKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) || txtCelular.getText().length() >= 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCelularKeyTyped
+
+    private void txtDirKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDirKeyTyped
+        char c = evt.getKeyChar();
+
+        if (!Character.isLetterOrDigit(c) && !Character.isWhitespace(c)
+                && c != ',' && c != '-' && c != '.') {
+            evt.consume(); // Ignora el carácter ingresado si no es válido para direcciones
+        }
+    }//GEN-LAST:event_txtDirKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

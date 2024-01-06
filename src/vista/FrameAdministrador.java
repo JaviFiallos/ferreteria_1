@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package vista;
 
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
-/**
- *
- * @author Kiwar
- */
 public class FrameAdministrador extends javax.swing.JFrame {
 
     //private panelProductos pc = new panelProductos();
@@ -78,7 +71,7 @@ public class FrameAdministrador extends javax.swing.JFrame {
                 btnProductoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 100, 30));
+        jPanel1.add(btnProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, 140, 30));
 
         btnVendedor.setBackground(new java.awt.Color(255, 120, 103));
         btnVendedor.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
@@ -90,7 +83,7 @@ public class FrameAdministrador extends javax.swing.JFrame {
                 btnVendedorActionPerformed(evt);
             }
         });
-        jPanel1.add(btnVendedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 100, 30));
+        jPanel1.add(btnVendedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 140, 30));
 
         btnProveedor.setBackground(new java.awt.Color(255, 120, 103));
         btnProveedor.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
@@ -102,7 +95,7 @@ public class FrameAdministrador extends javax.swing.JFrame {
                 btnProveedorActionPerformed(evt);
             }
         });
-        jPanel1.add(btnProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, 100, 30));
+        jPanel1.add(btnProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 140, 30));
 
         btnCompras.setBackground(new java.awt.Color(255, 120, 103));
         btnCompras.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
@@ -114,7 +107,7 @@ public class FrameAdministrador extends javax.swing.JFrame {
                 btnComprasActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCompras, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, 100, 30));
+        jPanel1.add(btnCompras, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 340, 140, 30));
 
         btnCategorias.setBackground(new java.awt.Color(255, 120, 103));
         btnCategorias.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
@@ -126,7 +119,7 @@ public class FrameAdministrador extends javax.swing.JFrame {
                 btnCategoriasActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCategorias, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 440, 100, 30));
+        jPanel1.add(btnCategorias, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 490, 140, 30));
 
         btnMarcas.setBackground(new java.awt.Color(255, 120, 103));
         btnMarcas.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
@@ -138,31 +131,35 @@ public class FrameAdministrador extends javax.swing.JFrame {
                 btnMarcasActionPerformed(evt);
             }
         });
-        jPanel1.add(btnMarcas, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 490, 100, 30));
+        jPanel1.add(btnMarcas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, 140, 30));
 
         btnGenericos.setBackground(new java.awt.Color(255, 120, 103));
         btnGenericos.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
         btnGenericos.setForeground(new java.awt.Color(0, 0, 0));
-        btnGenericos.setText("Genericos");
+        btnGenericos.setText("Prod. Genericos");
         btnGenericos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255), new java.awt.Color(255, 153, 204), new java.awt.Color(255, 255, 255)));
         btnGenericos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGenericosActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGenericos, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 540, 100, 30));
+        jPanel1.add(btnGenericos, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 540, 140, 30));
 
-        jPanel2.setBackground(new java.awt.Color(237, 234, 222));
+        jPanel2.setBackground(new java.awt.Color(153, 204, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/tool-icon-260nw-453607810.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logo_Ferr_min.png"))); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Franklin Gothic Demi Cond", 2, 24)); // NOI18N
+        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel3.setFont(new java.awt.Font("Corbel", 2, 22)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Tu ferretería de confianza, siempre a tu medida");
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 3, 20)); // NOI18N
-        jLabel4.setText("Herramientas para tus proyectos, soluciones para tu hogar.");
+        jLabel4.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel4.setFont(new java.awt.Font("Corbel", 1, 20)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("HERRAMIENTAS PARA TUS PROYECTOS, SOLUCIONES PARA TU HOGAR.");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -173,13 +170,12 @@ public class FrameAdministrador extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 635, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(125, 125, 125)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(101, 101, 101)
+                        .addComponent(jLabel3)))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,11 +186,12 @@ public class FrameAdministrador extends javax.swing.JFrame {
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14))
+                        .addGap(20, 20, 20))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
+        panelPrincipal.setBackground(new java.awt.Color(255, 255, 255));
         panelPrincipal.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
@@ -215,9 +212,10 @@ public class FrameAdministrador extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

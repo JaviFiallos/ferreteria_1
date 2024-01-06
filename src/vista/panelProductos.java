@@ -7,6 +7,7 @@ package vista;
 import clases.Genericos;
 import clases.Marca;
 import clases.Producto_;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -168,6 +169,11 @@ public class panelProductos extends javax.swing.JPanel {
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
 
         txtModelo.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtModelo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtModeloKeyTyped(evt);
+            }
+        });
         add(txtModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 200, -1));
 
         jLabel4.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
@@ -240,6 +246,11 @@ public class panelProductos extends javax.swing.JPanel {
 
         txtDescr.setColumns(20);
         txtDescr.setRows(5);
+        txtDescr.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescrKeyTyped(evt);
+            }
+        });
         jScrollPane2.setViewportView(txtDescr);
 
         add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 200, 80));
@@ -253,6 +264,11 @@ public class panelProductos extends javax.swing.JPanel {
         add(comboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 320, 200, -1));
 
         txtNombre.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
         add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, 200, -1));
 
         lbl_ID.setForeground(new java.awt.Color(255, 218, 157));
@@ -264,15 +280,19 @@ public class panelProductos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        if (!this.lbl_ID.equals("")) {
+        if (!this.lbl_ID.getText().isEmpty()) {
 
-            if (pd.eliminarProducto(Integer.valueOf(this.lbl_ID.getText()))) {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
-            } else {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "No se Elimino");
+            int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de Eliminar este registro");
+            if (pregunta == 0) {
+                if (pd.eliminarProducto(Integer.valueOf(this.lbl_ID.getText()))) {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
+                } else {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "No se Elimino");
+                }
             }
+
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un Producto ");
         }
@@ -280,40 +300,60 @@ public class panelProductos extends javax.swing.JPanel {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
-        String nombre = this.txtNombre.getText();
-        String descripcion = this.txtDescr.getText();
-        String modelo2 = this.txtModelo.getText();
-        int tipo = ((Genericos) this.comboTipo.getSelectedItem()).getId();
-        int marca = ((Marca) this.comboMarca.getSelectedItem()).getId();
-        p = new Producto_(nombre, marca, tipo, modelo2, descripcion);
-
-        if (pd.registrarProducto(p)) {
-            limpiar();
-            JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+        if (this.txtDescr.getText().isEmpty() || this.txtNombre.getText().isEmpty()
+                || this.txtModelo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Complete todos los campos");
         } else {
-            limpiar();
-            JOptionPane.showMessageDialog(this, "No se registro");
+            if (this.comboMarca.getSelectedIndex() != 0 && this.comboTipo.getSelectedIndex() != 0) {
+                String nombre = this.txtNombre.getText();
+                String descripcion = this.txtDescr.getText();
+                String modelo2 = this.txtModelo.getText();
+                int tipo = ((Genericos) this.comboTipo.getSelectedItem()).getId();
+                int marca = ((Marca) this.comboMarca.getSelectedItem()).getId();
+                p = new Producto_(nombre, marca, tipo, modelo2, descripcion);
+
+                if (pd.registrarProducto(p)) {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+                } else {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "No se registro");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Escoja una marca o tipo");
+            }
         }
+
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
 
-        if (!this.lbl_ID.getText().equals("")) {
+        if (!this.lbl_ID.getText().isEmpty()) {
 
-            String nombre = this.txtNombre.getText();
-            String descripcion = this.txtDescr.getText();
-            String modelo2 = this.txtModelo.getText();
-            int tipo = ((Genericos) this.comboTipo.getSelectedItem()).getId();
-            int marca = ((Marca) this.comboMarca.getSelectedItem()).getId();
-            p = new Producto_(Integer.parseInt(this.lbl_ID.getText()), nombre, marca, tipo, modelo2, descripcion);
-
-            if (pd.modificarProducto(p)) {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "Se Modifico correctamente");
+            if (this.txtDescr.getText().isEmpty() || this.txtNombre.getText().isEmpty()
+                    || this.txtModelo.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Complete todos los campos");
             } else {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "No se Modifico");
+                if (this.comboMarca.getSelectedIndex() != 0 && this.comboTipo.getSelectedIndex() != 0) {
+                    String nombre = this.txtNombre.getText();
+                    String descripcion = this.txtDescr.getText();
+                    String modelo2 = this.txtModelo.getText();
+                    int tipo = ((Genericos) this.comboTipo.getSelectedItem()).getId();
+                    int marca = ((Marca) this.comboMarca.getSelectedItem()).getId();
+                    p = new Producto_(Integer.parseInt(this.lbl_ID.getText()), nombre, marca, tipo, modelo2, descripcion);
+
+                    if (pd.modificarProducto(p)) {
+                        limpiar();
+                        JOptionPane.showMessageDialog(this, "Se Modifico correctamente");
+                    } else {
+                        limpiar();
+                        JOptionPane.showMessageDialog(this, "No se Modifico");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Escoja una marca o tipo");
+                }
             }
+
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un Producto ");
         }
@@ -324,11 +364,32 @@ public class panelProductos extends javax.swing.JPanel {
         int fila = this.tablaProductos.rowAtPoint(evt.getPoint());
         this.lbl_ID.setText(this.tablaProductos.getValueAt(fila, 0).toString());
         this.txtNombre.setText(this.tablaProductos.getValueAt(fila, 1).toString());
-        this.comboMarca.getModel().setSelectedItem(new Marca(Integer.parseInt(this.tablaProductos.getValueAt(fila, 2).toString()),this.tablaProductos.getValueAt(fila, 3).toString()));
-         this.txtModelo.setText(this.tablaProductos.getValueAt(fila, 4).toString());
+        this.comboMarca.getModel().setSelectedItem(new Marca(Integer.parseInt(this.tablaProductos.getValueAt(fila, 2).toString()), this.tablaProductos.getValueAt(fila, 3).toString()));
+        this.txtModelo.setText(this.tablaProductos.getValueAt(fila, 4).toString());
         this.txtDescr.setText(this.tablaProductos.getValueAt(fila, 5).toString());
-        this.comboTipo.getModel().setSelectedItem(new Genericos(Integer.parseInt(this.tablaProductos.getValueAt(fila, 6).toString()),this.tablaProductos.getValueAt(fila, 7).toString()));
+        this.comboTipo.getModel().setSelectedItem(new Genericos(Integer.parseInt(this.tablaProductos.getValueAt(fila, 6).toString()), this.tablaProductos.getValueAt(fila, 7).toString()));
     }//GEN-LAST:event_tablaProductosMouseClicked
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_SPACE || c == '-')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtDescrKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescrKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_SPACE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDescrKeyTyped
+
+    private void txtModeloKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtModeloKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_SPACE || c == '-')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtModeloKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
