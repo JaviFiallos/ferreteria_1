@@ -59,6 +59,7 @@ public class panelVentas extends javax.swing.JPanel {
     }
 
     private void agregarProducto() {
+        this.lbStock.setText("");
         item = item + 1;
         this.modelo6 = (DefaultTableModel) this.tablaNuevaCompra.getModel();
         int id = ((Producto_) this.comboProductos.getSelectedItem()).getId();
@@ -476,7 +477,7 @@ public class panelVentas extends javax.swing.JPanel {
         if (!this.txtCantidad.getText().equals("") && this.comboProductos.getSelectedIndex() != 0) {
             if (Validacion.esEntero(this.txtCantidad.getText())) {
                 if (Integer.parseInt(this.txtCantidad.getText()) > 0) {
-                    if (Integer.parseInt(this.lbStock.getText()) <= Integer.parseInt(this.txtCantidad.getText())) {
+                    if (Integer.parseInt(this.lbStock.getText()) >= Integer.parseInt(this.txtCantidad.getText())) {
                         agregarProducto();
                         limpiarParcial();
                     } else {
