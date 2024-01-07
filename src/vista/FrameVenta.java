@@ -219,7 +219,10 @@ public class FrameVenta extends javax.swing.JFrame {
         panelPrincipal.revalidate();
         panelPrincipal.repaint();
     }
-
+    public static void main(String[] args) {
+        FrameVenta v  = new FrameVenta();
+        v.setVisible(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

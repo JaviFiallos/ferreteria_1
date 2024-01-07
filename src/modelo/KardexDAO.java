@@ -138,13 +138,14 @@ public class KardexDAO extends Conexion {
 
     public List listadevolucionVenta(int id) {
         List<Kardex> lista = new ArrayList<>();
-        Kardex pro = new Kardex();
+        
         String sql = "SELECT ID_PRO,ID_VEN,DETALLE,PRECIO,SALIDA FROM kardex WHERE ID_VEN = ? AND ESTADO = '0'";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
+                Kardex pro = new Kardex();
                 pro.setProducto(rs.getInt(1));
                 pro.setVenta(rs.getInt(2));
                 pro.setDetalle(rs.getString(3));
