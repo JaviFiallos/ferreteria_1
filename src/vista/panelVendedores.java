@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package vista;
 
 import clases.Usuario;
@@ -10,10 +6,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.VendedorDAO;
 
-/**
- *
- * @author PC
- */
 public class panelVendedores extends javax.swing.JPanel {
 
     private Usuario v;
@@ -109,6 +101,11 @@ public class panelVendedores extends javax.swing.JPanel {
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
 
         txtCedula.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCedulaKeyTyped(evt);
+            }
+        });
         add(txtCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 170, -1));
 
         jLabel4.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
@@ -117,6 +114,11 @@ public class panelVendedores extends javax.swing.JPanel {
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
 
         txtNombre.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
         add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 170, -1));
 
         jLabel5.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
@@ -125,6 +127,11 @@ public class panelVendedores extends javax.swing.JPanel {
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, -1, -1));
 
         txtApellido.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApellidoKeyTyped(evt);
+            }
+        });
         add(txtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 170, -1));
 
         jLabel6.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
@@ -133,6 +140,11 @@ public class panelVendedores extends javax.swing.JPanel {
         add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, -1, -1));
 
         txtCelular.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtCelular.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCelularKeyTyped(evt);
+            }
+        });
         add(txtCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 170, -1));
 
         jLabel7.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
@@ -199,6 +211,11 @@ public class panelVendedores extends javax.swing.JPanel {
         add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 420, 120, 30));
 
         txtSueldo.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+        txtSueldo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSueldoKeyTyped(evt);
+            }
+        });
         add(txtSueldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, 170, -1));
 
         txtContra.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
@@ -210,15 +227,18 @@ public class panelVendedores extends javax.swing.JPanel {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-        if (!this.txtCedula.equals("")) {
-
-            if (vd.eliminarVendedor(this.txtCedula.getText())) {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
-            } else {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "No se Elimino el Vendedor");
+        if (!this.txtCedula.getText().isEmpty()) {
+            int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de Eliminar este registro");
+            if (pregunta == 0) {
+                if (vd.eliminarVendedor(this.txtCedula.getText())) {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "Se Elimino correctamente");
+                } else {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "No se Elimino el Vendedor");
+                }
             }
+
         } else {
             JOptionPane.showMessageDialog(this, "Ingrese un Ruc");
         }
@@ -229,25 +249,33 @@ public class panelVendedores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnAgergarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgergarActionPerformed
-        String cedula = this.txtCedula.getText();
-        String nombre = this.txtNombre.getText();
-        String apellido = this.txtApellido.getText();
-        String celular = this.txtCelular.getText();
-        Double sueldo = Double.valueOf(this.txtSueldo.getText());
-        String contra = new String(this.txtContra.getPassword());
-        String confContra = new String(this.txtContra2.getPassword());
 
-        if (contra.equals(confContra)) {
-            v = new Usuario(cedula, confContra, nombre, apellido, sueldo, celular);
-            if (vd.registrarVendedor(v)) {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "Se Registro correctamente");
-            } else {
-                limpiar();
-                JOptionPane.showMessageDialog(this, "No se registro el Vendedor");
-            }
+        if (this.txtCedula.getText().isEmpty() || this.txtNombre.getText().isEmpty() || this.txtApellido.getText().isEmpty()
+                || this.txtCelular.getText().isEmpty() || this.txtSueldo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Complete todos los campos");
         } else {
-            JOptionPane.showMessageDialog(this, "Las Contraseñas No coinciden");
+            String cedula = this.txtCedula.getText();
+            String nombre = this.txtNombre.getText();
+            String apellido = this.txtApellido.getText();
+            String celular = this.txtCelular.getText();
+            Double sueldo = Double.valueOf(this.txtSueldo.getText());
+
+            String contra = new String(this.txtContra.getPassword());
+            String confContra = new String(this.txtContra2.getPassword());
+
+            if (contra.equals(confContra)) {
+                v = new Usuario(cedula, confContra, nombre, apellido, sueldo, celular);
+                if (vd.registrarVendedor(v)) {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "Se Registro correctamente");
+                } else {
+                    limpiar();
+                    JOptionPane.showMessageDialog(this, "No se registro el Vendedor");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Las Contraseñas No coinciden");
+            }
+
         }
 
 
@@ -255,30 +283,36 @@ public class panelVendedores extends javax.swing.JPanel {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
 
-        if (!this.txtCedula.equals("")) {
+        if (!this.txtCedula.getText().isEmpty()) {
 
-            String cedula = this.txtCedula.getText();
-            String nombre = this.txtNombre.getText();
-            String apellido = this.txtApellido.getText();
-            String celular = this.txtCelular.getText();
-            Double sueldo = Double.valueOf(this.txtSueldo.getText());
-            String contra = new String(this.txtContra.getPassword());
-            String confContra = new String(this.txtContra2.getPassword());
-
-            if (contra.equals(confContra)) {
-                v = new Usuario(cedula, confContra, nombre, apellido, sueldo, celular);
-                if (vd.modificarVendedor(v)) {
-                    limpiar();
-                    JOptionPane.showMessageDialog(this, "Se MOdifico correctamente");
-                } else {
-                    limpiar();
-                    JOptionPane.showMessageDialog(this, "No se modifico el Vendedor");
-                }
+            if (this.txtNombre.getText().isEmpty() || this.txtApellido.getText().isEmpty()
+                    || this.txtCelular.getText().isEmpty() || this.txtSueldo.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Complete todos los campos");
             } else {
-                JOptionPane.showMessageDialog(this, "Las Contraseñas No coinciden");
+                String cedula = this.txtCedula.getText();
+                String nombre = this.txtNombre.getText();
+                String apellido = this.txtApellido.getText();
+                String celular = this.txtCelular.getText();
+                Double sueldo = Double.valueOf(this.txtSueldo.getText());
+                String contra = new String(this.txtContra.getPassword());
+                String confContra = new String(this.txtContra2.getPassword());
+
+                if (contra.equals(confContra)) {
+                    v = new Usuario(cedula, confContra, nombre, apellido, sueldo, celular);
+                    if (vd.modificarVendedor(v)) {
+                        limpiar();
+                        JOptionPane.showMessageDialog(this, "Se MOdifico correctamente");
+                    } else {
+                        limpiar();
+                        JOptionPane.showMessageDialog(this, "No se modifico el Vendedor");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Las Contraseñas No coinciden");
+                }
             }
+
         } else {
-            JOptionPane.showMessageDialog(this, "Ingrese una Cedula");
+            JOptionPane.showMessageDialog(this, "Escoja un Proveedor");
         }
 
     }//GEN-LAST:event_btnModificarActionPerformed
@@ -292,6 +326,63 @@ public class panelVendedores extends javax.swing.JPanel {
         this.txtCelular.setText(this.tablaVendedores.getValueAt(fila, 4).toString());
         this.txtContra.setText(this.tablaVendedores.getValueAt(fila, 5).toString());
     }//GEN-LAST:event_tablaVendedoresMouseClicked
+
+    private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) || txtCedula.getText().length() >= 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCedulaKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        char c = evt.getKeyChar();
+        String text = this.txtNombre.getText();
+        int espacios = 0;
+        boolean validar = text.contains(" ");
+        for (char ch : text.toCharArray()) {
+            if (ch == ' ') {
+                espacios++;
+            }
+        }
+        if ((!Character.isLetter(c) && !Character.isSpaceChar(c)) || (validar && !Character.isLetter(c)) || espacios > 1 || text.length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyTyped
+         char c = evt.getKeyChar();
+        String text = this.txtApellido.getText();
+        int espacios = 0;
+        boolean validar = text.contains(" ");
+        for (char ch : text.toCharArray()) {
+            if (ch == ' ') {
+                espacios++;
+            }
+        }
+        if ((!Character.isLetter(c) && !Character.isSpaceChar(c)) || (validar && !Character.isLetter(c)) || espacios > 1 || text.length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtApellidoKeyTyped
+
+    private void txtCelularKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCelularKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) || txtCelular.getText().length() >= 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCelularKeyTyped
+
+    private void txtSueldoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSueldoKeyTyped
+        char c = evt.getKeyChar();
+        boolean puntoIngresado = false;
+        // Permitir solo números y un solo punto
+        if (!(Character.isDigit(c) || (c == '.' && !puntoIngresado && txtSueldo.getText().indexOf('.') == -1))) {
+            evt.consume(); // Ignorar el carácter ingresado si no es un número o el segundo punto
+        }
+
+        if (c == '.' && !puntoIngresado) {
+            puntoIngresado = true; // Marcar que se ingresó el punto
+        }
+    }//GEN-LAST:event_txtSueldoKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
