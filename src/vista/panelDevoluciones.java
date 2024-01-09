@@ -36,6 +36,7 @@ public class panelDevoluciones extends javax.swing.JPanel {
     private void cargarTabla() {
         List<Kardex> lt = kbd.listadevolucionVenta(Integer.parseInt(this.txtFac.getText()));
         modelo = (DefaultTableModel) tablaProductos.getModel();
+        modelo.setRowCount(0);
         for (Kardex v : lt) {
             modelo.addRow(new Object[]{v.getVenta(), v.getProducto(), v.getDetalle(), v.getPrecioUnitario(), v.getSalida(), String.format("%.2f", v.getSalida() * v.getPrecioUnitario())});
         }

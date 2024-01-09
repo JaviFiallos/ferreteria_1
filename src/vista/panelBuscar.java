@@ -61,7 +61,6 @@ public class panelBuscar extends javax.swing.JPanel {
     }
 
     private void cargarTabla() {
-        
         String sql = "SELECT * FROM productos WHERE 1=1";
         if (!comboTipo.getSelectedItem().equals("Seleccione")) {
             sql += " AND ID_PRO_GEN = "+((Genericos) this.comboTipo.getSelectedItem()).getId();
@@ -71,9 +70,9 @@ public class panelBuscar extends javax.swing.JPanel {
         }
          sql += ";";
         modelo = (DefaultTableModel) tablaProductos.getModel();
+        modelo.setRowCount(0);
         gd.listarQuery(modelo, sql);
         this.tablaProductos.setModel(modelo);
-
     }
 
     /**

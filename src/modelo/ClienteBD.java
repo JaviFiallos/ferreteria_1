@@ -18,8 +18,9 @@ import javax.swing.JOptionPane;
  *
  * @author Kiwar
  */
-public class ClienteBD extends Conexion{
-     private final Connection con = getConexion();
+public class ClienteBD extends Conexion {
+
+    private final Connection con = getConexion();
     private PreparedStatement ps;
     private ResultSet rs;
 
@@ -37,6 +38,7 @@ public class ClienteBD extends Conexion{
                 pro.setCedula(rs.getString(1));
                 pro.setNombre(rs.getString(2));
                 pro.setApellido(rs.getString(3));
+                return pro;
             } else {
                 System.out.println("No hay resultados");
                 return null;
@@ -45,14 +47,15 @@ public class ClienteBD extends Conexion{
             JOptionPane.showMessageDialog(null, ex);
 
         }
-        return pro;
+        return null;
     }
-    public boolean crearCliente(Cliente c){
-        
+
+    public boolean crearCliente(Cliente c) {
+
         String sql = "INSERT INTO clientes (CED_CLI, NOM_CLI, APE_CLI) values (?,?,?)";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1,c.getCedula());
+            ps.setString(1, c.getCedula());
             ps.setString(2, c.getNombre());
             ps.setString(3, c.getApellido());
             ps.execute();
@@ -62,17 +65,19 @@ public class ClienteBD extends Conexion{
             return false;
         }
     }
+
     public List listarPersona() {
 
-        Cliente pro = new Cliente();
         List<Cliente> lista = new ArrayList<>();
-        String sql = "SELECT CED_CLI,NOM_CLI,APE_CLI FROM clientes";
+        String sql = "SELECT CED_CLI,NOM_CLI,APE_CLI FROM clientes where CED_CLI != 'Cliente final'";
 
         try {
 
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
+
+                Cliente pro = new Cliente();
                 pro.setCedula(rs.getString(1));
                 pro.setNombre(rs.getString(2));
                 pro.setApellido(rs.getString(3));

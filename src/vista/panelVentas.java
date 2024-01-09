@@ -17,6 +17,8 @@ import modelo.productoDAO_;
 import clases.Validacion;
 import java.awt.Color;
 import java.util.Locale;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 import modelo.ClienteBD;
 import modelo.CreditoBD;
 
@@ -135,11 +137,10 @@ public class panelVentas extends javax.swing.JPanel {
         }
     }
 
-    private void registrarVenta() {
+    private void registrarVenta(String ced) {
         v.setTotal(this.totalPagar);
-        v.setCedCliente(this.txtCedula.getText());
+        v.setCedCliente(ced);
         v.setCedVendedor(cedVendedor);
-        v.setCedCliente("Cliente final");
         if (vd.registrarVenta(v)) {
 
             registrarVentaKardex();
@@ -178,6 +179,7 @@ public class panelVentas extends javax.swing.JPanel {
         this.comboProductos.setSelectedIndex(0);
         limpiarTabla(modelo6);
         this.lblTotal.setText("----");
+        cl = null;
 
     }
 
@@ -439,14 +441,14 @@ public class panelVentas extends javax.swing.JPanel {
                                 c2.setNombre(this.txtNombre.getText().substring(0, this.txtNombre.getText().indexOf(' ')));
                                 c2.setApellido(this.txtNombre.getText().substring(this.txtNombre.getText().indexOf(' ')));
                                 if (clbd.crearCliente(c2)) {
-                                    registrarVenta();
+                                    registrarVenta(this.txtCedula.getText());
                                     cr.setIdVenta(kd.idVenta());
                                     cr.setDes("Credito");
                                     crbd.crearCredito(cr);
                                     limpiarTotal();
                                 }
                             } else {
-                                registrarVenta();
+                                registrarVenta(this.txtCedula.getText());
                                 cr.setIdVenta(kd.idVenta());
                                 cr.setDes("Credito");
                                 crbd.crearCredito(cr);
@@ -512,11 +514,11 @@ public class panelVentas extends javax.swing.JPanel {
                                 c2.setNombre(this.txtNombre.getText().substring(0, this.txtNombre.getText().indexOf(' ')));
                                 c2.setApellido(this.txtNombre.getText().substring(this.txtNombre.getText().indexOf(' ')));
                                 if (clbd.crearCliente(c2)) {
-                                    registrarVenta();
+                                    registrarVenta(this.txtCedula.getText());
                                     limpiarTotal();
                                 }
                             } else {
-                                registrarVenta();
+                                registrarVenta(cl.getCedula());
                                 limpiarTotal();
                             }
                         } else {
@@ -526,9 +528,9 @@ public class panelVentas extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(this, "Celuda no Valida");
 
                     }
-                    
-                }else {
-                    registrarVenta();
+
+                } else {
+                    registrarVenta("Cliente final");
                     limpiarTotal();
                 }
             }
@@ -606,10 +608,19 @@ public class panelVentas extends javax.swing.JPanel {
     private void txtCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCedulaFocusLost
         // TODO add your handling code here:
         if (!this.txtCedula.getText().equals("CEDULA")) {
-            cl = clbd.obPersona(this.txtCedula.getText());
-            if (cl != null) {
-                this.txtNombre.setText(cl.getNombre() + " " + cl.getApellido());
+            if (Validacion.validadorDeCedula(this.txtCedula.getText())) {
+                Border border = BorderFactory.createLineBorder(Color.GREEN, 2);
+                this.txtCedula.setBorder(border);
+                cl = clbd.obPersona(this.txtCedula.getText());
+                if (cl != null) {
+                    this.txtNombre.setText(cl.getNombre() + " " + cl.getApellido());
+                }
+            } else {
+                Border border = BorderFactory.createLineBorder(Color.RED, 2);
+                this.txtCedula.setBorder(border);
+
             }
+
         }
     }//GEN-LAST:event_txtCedulaFocusLost
 

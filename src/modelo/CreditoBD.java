@@ -42,7 +42,6 @@ public class CreditoBD extends Conexion{
     
     public List creditosPorCliente(String ced) {
         List<Venta> lista = new ArrayList<>();
-        Venta pro = new Venta();
         String sql = """
                      SELECT v.*
                      FROM ventas v
@@ -56,6 +55,7 @@ public class CreditoBD extends Conexion{
             ps.setString(1, ced);
             rs = ps.executeQuery();
             while (rs.next()) {
+                Venta pro = new Venta();
                 pro.setId(rs.getInt(1));
                 pro.setTotal(rs.getDouble(2));
                 pro.setFecha(rs.getString(3));

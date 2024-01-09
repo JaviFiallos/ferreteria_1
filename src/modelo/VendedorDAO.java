@@ -78,7 +78,7 @@ public class VendedorDAO extends Conexion {
 
     public List listarVendedor() {
 
-        String sql = "SELECT CED_USU, CON_USU, NOM_USU, APE_USU, SUE_USU, CEL_USU FROM usuarios";
+        String sql = "SELECT CED_USU, CON_USU, NOM_USU, APE_USU, SUE_USU, CEL_USU FROM usuarios where ROL_USU='0'";
         List<Usuario> lista = new ArrayList<>();
 
         try {

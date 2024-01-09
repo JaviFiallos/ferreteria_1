@@ -52,6 +52,7 @@ public class panelCredito extends javax.swing.JPanel {
     private void cargarTabla() {
         List<Venta> lt = crbd.creditosPorCliente(((Cliente) this.cobCliente.getSelectedItem()).getCedula());
         modelo = (DefaultTableModel) tablaProductos.getModel();
+        modelo.setRowCount(0);
         for(Venta v: lt){
             modelo.addRow(new Object[]{v.getId(),v.getTotal(),v.getFecha()});
         }
@@ -148,6 +149,11 @@ public class panelCredito extends javax.swing.JPanel {
 
         cobCliente.setFont(new java.awt.Font("Corbel", 0, 12)); // NOI18N
         cobCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        cobCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cobClienteActionPerformed(evt);
+            }
+        });
         add(cobCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 200, -1));
 
         lbl_ID.setForeground(new java.awt.Color(255, 218, 157));
@@ -186,6 +192,10 @@ public class panelCredito extends javax.swing.JPanel {
             this.cargarTabla();
         }
     }//GEN-LAST:event_btnPagarActionPerformed
+
+    private void cobClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cobClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cobClienteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

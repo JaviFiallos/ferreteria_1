@@ -2,6 +2,7 @@
 package vista;
 
 import clases.Usuario;
+import controlador.configVentanaLog;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import modelo.usuarioEstatico;
@@ -37,6 +38,7 @@ public class FrameVenta extends javax.swing.JFrame {
         btnDevolucion = new javax.swing.JButton();
         lbUser = new javax.swing.JLabel();
         btnCredito = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -103,6 +105,17 @@ public class FrameVenta extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnCredito, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 430, 130, -1));
+
+        btnSalir.setBackground(new java.awt.Color(255, 120, 103));
+        btnSalir.setFont(new java.awt.Font("Corbel", 1, 16)); // NOI18N
+        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 480, 130, -1));
 
         jPanel2.setBackground(new java.awt.Color(153, 204, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -210,6 +223,13 @@ public class FrameVenta extends javax.swing.JFrame {
         panelCredito p = new panelCredito();
         this.mostrarPanel(p);
     }//GEN-LAST:event_btnCreditoActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        configVentanaLog l = new configVentanaLog();
+        l.iniciar();
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
     public void mostrarPanel(JPanel p) {
 
         p.setSize(901, 480);
@@ -228,6 +248,7 @@ public class FrameVenta extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCredito;
     private javax.swing.JButton btnDevolucion;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnVender;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
