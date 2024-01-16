@@ -124,6 +124,22 @@ public class productoDAO_ extends Conexion {
             System.out.println(ex);
         }
     }
+    public String producto(int id) {
+
+        String sql = "SELECT  NOM_PRO FROM productos where ID_PRO= '"+id+"'";
+
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("NOM_PRO");
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+
+        }
+        return "";
+    }
 }
 // genericos
 /*   

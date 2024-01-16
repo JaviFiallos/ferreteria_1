@@ -15,8 +15,24 @@ import modelo.KardexDAO;
 import modelo.VentaBD;
 import modelo.productoDAO_;
 import clases.Validacion;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
+import java.awt.Font;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 import modelo.ClienteBD;
@@ -144,7 +160,6 @@ public class panelVentas extends javax.swing.JPanel {
         if (vd.registrarVenta(v)) {
 
             registrarVentaKardex();
-
             JOptionPane.showMessageDialog(null, "Su compra ha sido realizada con exito");
 
         } else {
@@ -168,6 +183,7 @@ public class panelVentas extends javax.swing.JPanel {
             k.setSalida(cantE);
             kd.agregarKardexVenta(k);
         }
+
     }
 
     private void limpiarTotal() {
@@ -445,6 +461,11 @@ public class panelVentas extends javax.swing.JPanel {
                                     cr.setIdVenta(kd.idVenta());
                                     cr.setDes("Credito");
                                     crbd.crearCredito(cr);
+                                    try {
+                                        generarReporte(this.txtCedula.getText(), this.txtNombre.getText());
+                                    } catch (BadElementException | IOException ex) {
+                                        System.out.println(ex);
+                                    }
                                     limpiarTotal();
                                 }
                             } else {
@@ -452,6 +473,11 @@ public class panelVentas extends javax.swing.JPanel {
                                 cr.setIdVenta(kd.idVenta());
                                 cr.setDes("Credito");
                                 crbd.crearCredito(cr);
+                                try {
+                                    generarReporte(this.txtCedula.getText(), this.txtNombre.getText());
+                                } catch (BadElementException | IOException ex) {
+                                    System.out.println(ex);
+                                }
                                 limpiarTotal();
                             }
                         } else {
@@ -515,10 +541,21 @@ public class panelVentas extends javax.swing.JPanel {
                                 c2.setApellido(this.txtNombre.getText().substring(this.txtNombre.getText().indexOf(' ')));
                                 if (clbd.crearCliente(c2)) {
                                     registrarVenta(this.txtCedula.getText());
+
+                                    try {
+                                        generarReporte(this.txtCedula.getText(), this.txtNombre.getText());
+                                    } catch (BadElementException | IOException ex) {
+                                        System.out.println(ex);
+                                    }
                                     limpiarTotal();
                                 }
                             } else {
                                 registrarVenta(cl.getCedula());
+                                try {
+                                    generarReporte(this.txtCedula.getText(), this.txtNombre.getText());
+                                } catch (BadElementException | IOException ex) {
+                                    System.out.println(ex);
+                                }
                                 limpiarTotal();
                             }
                         } else {
@@ -531,6 +568,11 @@ public class panelVentas extends javax.swing.JPanel {
 
                 } else {
                     registrarVenta("Cliente final");
+                    try {
+                        generarReporte("Cliente final", "-------");
+                    } catch (BadElementException | IOException ex) {
+                        System.out.println(ex);
+                    }
                     limpiarTotal();
                 }
             }
@@ -635,6 +677,64 @@ public class panelVentas extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_comboProductosActionPerformed
+
+    private void generarReporte(String ced, String nom) throws BadElementException, IOException {
+        Document docu = new Document();
+        int id = kd.idVenta();
+        try {
+
+            String ruta = System.getProperty("user.home");
+
+            PdfWriter.getInstance(docu, new FileOutputStream(ruta + "/Desktop/Reporte.pdf"));
+
+            Image header = Image.getInstance("src/imagenes/sistemas.png");
+            header.scaleToFit(200, 1000);
+            header.setAlignment(Chunk.ALIGN_CENTER);
+            Paragraph pr = new Paragraph();
+            pr.setAlignment(Paragraph.ALIGN_CENTER);
+            pr.setFont(FontFactory.getFont("Tahoma", 20, Font.BOLD, BaseColor.DARK_GRAY));
+            pr.add("Factura de Venta\n\n");
+            pr.add("0000" + id + "\n\n");
+            pr.add("Cliente:\n\n");
+            pr.setFont(FontFactory.getFont("Tahoma", 10, Font.BOLD, BaseColor.DARK_GRAY));
+            pr.add("Cedula:  " + ced + "\n\n");
+            pr.add("Nombre:  " + nom + "\n\n");
+            pr.setFont(FontFactory.getFont("Tahoma", 20, Font.BOLD, BaseColor.DARK_GRAY));
+            pr.add("PRODUCTOS\n\n");
+
+            docu.open();
+            docu.add(header);
+            docu.add(pr);
+            PdfPTable tb = new PdfPTable(5);
+            tb.addCell("ID");
+            tb.addCell("PRODUCTO");
+            tb.addCell("CANTIDAD");
+            tb.addCell("PRECIO");
+            tb.addCell("TOTAL");
+            productoDAO_ pb = new productoDAO_();
+            List<Kardex> lt = kd.listadevolucionVenta(id);
+            for (Kardex lt2 : lt) {
+
+                tb.addCell(String.valueOf(lt2.getProducto()));
+                tb.addCell(pb.producto(lt2.getProducto()));
+                tb.addCell(String.valueOf(lt2.getSalida()));
+                tb.addCell(String.valueOf(lt2.getPrecioUnitario()));
+                tb.addCell(String.format("%.2f", lt2.getSalida() * lt2.getPrecioUnitario()));
+            }
+            docu.add(tb);
+            Paragraph pr2 = new Paragraph();
+            pr2.setAlignment(Paragraph.ALIGN_RIGHT);
+            pr2.setFont(FontFactory.getFont("Tahoma", 10, Font.BOLD, BaseColor.DARK_GRAY));
+            pr2.add("Total: " + this.totalPagar + "\n\n");
+            pr2.add("Gracias por su compra:)\n\n");
+            docu.add(pr2);
+        } catch (DocumentException | FileNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            docu.close();
+        }
+
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
